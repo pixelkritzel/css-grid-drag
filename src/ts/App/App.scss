@@ -1,0 +1,45 @@
+$menu-height: 50px;
+$stylespanel-width: 200px;
+$resourcespanel-height: 200px;
+
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.menu {
+  position: absolute;
+  width: 100%;
+  height: $menu-height;
+  background-color: orchid;
+}
+
+.workingbench {
+  position: absolute;
+  top: $menu-height;
+  left: 0;
+  width: calc(100% - #{$stylespanel-width});
+  height: calc(100% - #{$menu-height} - #{$resourcespanel-height});
+  background-color: navajowhite;
+  overflow: scroll;
+}
+
+.stylesPanel {
+  position: absolute;
+  top: $menu-height;
+  right: 0;
+  width: $stylespanel-width;
+  height: calc(100% - #{$menu-height} - #{$resourcespanel-height});
+  background-color: silver;
+}
+
+.resourcesPanel {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: $resourcespanel-height;
+  background-color: indianred;
+}
