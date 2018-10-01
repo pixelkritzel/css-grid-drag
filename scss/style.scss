@@ -1,0 +1,14 @@
+@import 'partial';
+@import 'another';
+
+$complication: 'Complication';
+
+.nicerHeadlineWithA#{$complication} {
+  font-family: sans-serif;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.14);
+}
+
+.borderBottom {
+  padding-bottom: 15%;
+  border-bottom: 3px solid red;
+}
