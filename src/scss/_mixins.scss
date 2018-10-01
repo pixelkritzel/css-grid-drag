@@ -1,0 +1,43 @@
+// Retrieve color Sass maps
+@function color($key: 'blue') {
+  @return map-get($colors, $key);
+}
+
+@function theme-color($key: 'primary') {
+  @return map-get($theme-colors, $key);
+}
+
+@function gray($key: '100') {
+  @return map-get($grays, $key);
+}
+
+// Hover mixins
+
+@mixin hover {
+  &:hover {
+    @content;
+  }
+}
+
+@mixin hover-focus {
+  &:hover,
+  &:focus {
+    @content;
+  }
+}
+
+@mixin plain-hover-focus {
+  &,
+  &:hover,
+  &:focus {
+    @content;
+  }
+}
+
+@mixin hover-focus-active {
+  &:hover,
+  &:focus,
+  &:active {
+    @content;
+  }
+}
