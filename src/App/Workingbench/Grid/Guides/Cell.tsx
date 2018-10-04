@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const CSS = require('./Cell.scss');
+import CSS from './Cell.module.scss';
 
 export class Cell extends React.Component {
   render() {

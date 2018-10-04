@@ -2,15 +2,15 @@ import * as React from 'react';
 
 import { Cell } from './Cell';
 
-function generateDivs(number: number) {
+function generateDivs(no: number) {
   const divs = [];
-  for (let i = 1; i <= number; i++) {
+  for (let i = 1; i <= no; i++) {
     divs.push(<Cell />);
   }
   return divs;
 }
 
-export class Guides extends React.Component {
+export class Guides extends React.Component<{ columns: number; rows: number }, {}> {
   render() {
     const { columns, rows } = this.props;
     return <>{generateDivs(rows * columns)}</>;

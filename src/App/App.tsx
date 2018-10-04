@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Workingbench } from './Workingbench';
 
-const css = require('./App.scss');
+import css from './App.module.scss';
 
 export class App extends React.Component {
   render() {

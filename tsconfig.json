@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "dist",
+    "baseUrl": ".",
+    "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
     "lib": ["es6", "dom"],
@@ -14,6 +14,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
+    "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,

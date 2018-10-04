@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Guides } from './Guides';
 
-import { IGrid } from 'src/ts/store';
+import { IGrid } from 'src/store';
 
 export class Grid extends React.Component<{ grid: IGrid }, {}> {
   render() {

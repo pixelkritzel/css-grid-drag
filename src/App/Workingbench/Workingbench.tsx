@@ -3,7 +3,7 @@ import { inject } from 'mobx-react';
 
 import { Grid } from './Grid/Grid';
 
-import { IStore } from 'src/ts/store';
+import { IStore } from 'src/store';
 
 type IWorkingbenchProps = {
   store?: IStore;

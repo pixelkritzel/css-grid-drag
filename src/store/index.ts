@@ -1,5 +1,5 @@
 const defaultGrid = {
-  columns: 5,
+  columns: 12,
   rows: 12,
   gridGap: '6px'
 };
