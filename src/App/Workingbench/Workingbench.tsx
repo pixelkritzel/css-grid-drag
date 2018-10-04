@@ -12,13 +12,11 @@ type IWorkingbenchProps = {
 @inject('store')
 export class Workingbench extends React.Component<IWorkingbenchProps, {}> {
   render() {
-    console.log(JSON.stringify(this.props, undefined, 2));
-
     const { store } = this.props;
     return (
       <>
-        {store!.grids.map(grid => (
-          <Grid grid={grid} />
+        {store!.grids.map((grid, index) => (
+          <Grid key={`grid-${index}`} grid={grid} />
         ))}
       </>
     );
