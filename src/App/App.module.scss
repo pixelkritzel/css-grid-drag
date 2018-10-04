@@ -22,7 +22,6 @@ $resourcespanel-height: 200px;
   left: 0;
   width: calc(100% - #{$stylespanel-width});
   height: calc(100% - #{$menu-height} - #{$resourcespanel-height});
-  background-color: navajowhite;
   overflow: scroll;
 }
 
