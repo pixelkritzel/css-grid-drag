@@ -1,14 +1,8 @@
 import * as React from 'react';
 
-import { IGrid } from 'src/ts/store';
+import { Guides } from './Guides';
 
-function generateDivs(number: number) {
-  const divs = [];
-  for (let i = 1; i <= number; i++) {
-    divs.push(<div>{`No. ${i}`}</div>);
-  }
-  return divs;
-}
+import { IGrid } from 'src/ts/store';
 
 export class Grid extends React.Component<{ grid: IGrid }, {}> {
   render() {
@@ -18,6 +12,10 @@ export class Grid extends React.Component<{ grid: IGrid }, {}> {
       gridTemplate: `repeat(${grid.rows}, 1fr) / repeat(${grid.columns}, 1fr)`,
       gridGap: grid.gridGap
     };
-    return <div style={gridStyles}>{generateDivs(grid.rows * grid.columns)}</div>;
+    return (
+      <div style={gridStyles}>
+        <Guides columns={grid.columns} rows={grid.rows} />
+      </div>
+    );
   }
 }
