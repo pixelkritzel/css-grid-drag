@@ -28,7 +28,7 @@ export class Cell extends React.Component<ICellProps, {}> {
         className={CSS.cell}
         style={style}
         onMouseDown={_ => store.setDragStart(rowStart, columnStart)}
-        onMouseOver={store.drag ? () => store.setDragEnd(rowEnd, columnEnd) : undefined}
+        onMouseMove={store.drag ? () => store.setDragEnd(rowEnd, columnEnd) : undefined}
         onMouseUp={store.drag ? () => store.addElement() : undefined}
       />
     );
