@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 
 import { Element } from './Element';
 import { Guides } from './Guides';
 
-import { IGridModel, IStore } from 'src/store';
+import { IGridModel } from 'src/store/gridModel';
 
 function generateGridDefintionFromNames(names: string[]) {
-  return names.reduce((prev, name) => `${prev} [${name}] 1fr`, '').trim() + ' [end]';
+  return names.reduce((prev, name, index) => `${prev} [${name}] ${index < names.length - 1 ? ' 1fr' : ''}`, '');
 }
 
-@inject('store')
 @observer
-export class Grid extends React.Component<{ grid: IGridModel; store?: IStore }, {}> {
+export class Grid extends React.Component<{ grid: IGridModel }, {}> {
   render() {
     const { grid } = this.props;
     const gridStyles = {
@@ -24,10 +23,10 @@ export class Grid extends React.Component<{ grid: IGridModel; store?: IStore }, 
 
     return (
       <div style={gridStyles}>
-        {this.props.store!.elements.map(element => (
+        {grid.elements.map(element => (
           <Element element={element} />
         ))}
-        <Guides columns={grid.columns} rows={grid.rows} />
+        <Guides gridStore={grid} columns={grid.columns} rows={grid.rows} />
       </div>
     );
   }
