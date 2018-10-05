@@ -24,7 +24,8 @@ export class Cell extends React.Component<ICellProps, {}> {
     const { columnName, columnIndex, rowName, rowIndex, gridStore } = this.props;
     const style = {
       gridColumn: `${columnName} / span 1`,
-      gridRow: `${rowName} / span 1`
+      gridRow: `${rowName} / span 1`,
+      paddingBottom: (gridStore.cellHeight / gridStore.cellWidth) * 100 + '%'
     };
     return (
       <div

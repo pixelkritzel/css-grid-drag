@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { Workingbench } from './Workingbench';
+import { StylesPanel } from 'src/App/Components/StylesPanel';
+import { Workingbench } from 'src/App/Components/Workingbench';
 
 import css from './App.module.scss';
 
@@ -12,7 +13,9 @@ export class App extends React.Component {
         <div className={css.workingbench}>
           <Workingbench />
         </div>
-        <div className={css.stylesPanel}>Styles Panel</div>
+        <div className={css.stylesPanel}>
+          <StylesPanel />
+        </div>
         <div className={css.resourcesPanel}>Resources Panel</div>
       </div>
     );

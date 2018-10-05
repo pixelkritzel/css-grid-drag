@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import { Grid } from './Grid/Grid';
 
@@ -10,6 +10,7 @@ type IWorkingbenchProps = {
 };
 
 @inject('store')
+@observer
 export class Workingbench extends React.Component<IWorkingbenchProps, {}> {
   render() {
     const { store } = this.props;

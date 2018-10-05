@@ -1,17 +1,22 @@
 import { types } from 'mobx-state-tree';
 
-import { gridModel, createGridModelInitialData, defaultGrid } from './gridModel';
+import { defaultGrid, gridModel, IGridData, createGridModelInitialData } from './gridModel';
 
-const storeModel = types.model('store', {
-  grids: types.array(gridModel)
-});
+const defaultInitialData = {
+  grids: [createGridModelInitialData(defaultGrid)]
+};
 
-function createStore(initialData?: {}) {
-  if (!initialData) {
-    initialData = {
-      grids: [createGridModelInitialData(defaultGrid)]
-    };
-  }
+const storeModel = types
+  .model('store', {
+    grids: types.array(gridModel)
+  })
+  .actions(self => ({
+    addGrid(gridData: IGridData) {
+      self.grids.push(gridModel.create(createGridModelInitialData(gridData)));
+    }
+  }));
+
+function createStore(initialData: {} = defaultInitialData) {
   return storeModel.create(initialData);
 }
 

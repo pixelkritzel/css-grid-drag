@@ -4,16 +4,20 @@ import * as uuid from 'uuid/v4';
 export const defaultGrid = {
   noOfColumns: 12,
   noOfRows: 12,
+  cellWidth: 1,
+  cellHeigt: 1,
   gridGap: '6px'
 };
 
-export function createGridModelInitialData({ gridGap, noOfColumns, noOfRows }: typeof defaultGrid) {
-  const columns = [...Array(noOfColumns + 1).keys()].map((_, index) => 'col-' + index);
-  const rows = [...Array(noOfRows + 1).keys()].map((_, index) => 'row-' + index);
+export type IGridData = typeof defaultGrid;
+
+export function createGridModelInitialData({ noOfColumns, noOfRows, ...theRest }: IGridData) {
+  const columns = [...Array(noOfColumns + 1).keys()].map((_, index) => 'columns-' + index);
+  const rows = [...Array(noOfRows + 1).keys()].map((_, index) => 'rows-' + index);
   return {
     columns,
     rows,
-    gridGap
+    ...theRest
   };
 }
 
@@ -46,6 +50,8 @@ export const gridModel = types
     columns: types.array(types.string),
     rows: types.array(types.string),
     gridGap: '',
+    cellWidth: 1,
+    cellHeight: 1,
     drag: types.maybe(dragModel),
     elements: types.array(elementModel)
   })
@@ -80,6 +86,28 @@ export const gridModel = types
     },
     startDrag(column: number, row: number) {
       self.drag = dragModel.create({ start: { column, row }, end: { column: column + 1, row: row + 1 } });
+    },
+    updateField(name: string, value: string | number) {
+      if (typeof self[name] === 'number') {
+        value = Number(value);
+        if (isNaN(value) || value < 0) {
+          return;
+        }
+        self[name] = value;
+      }
+    },
+    changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement') {
+      const field = self[which];
+      if (action === 'increment') {
+        const endField = field.pop();
+        field.push(`${which}-${field.length}`);
+        field.push(endField!);
+      }
+      if (action === 'decrement') {
+        const endField = field.pop();
+        field.pop();
+        field.push(endField!);
+      }
     }
   }));
 
