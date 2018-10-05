@@ -99,14 +99,10 @@ export const gridModel = types
     changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement') {
       const field = self[which];
       if (action === 'increment') {
-        const endField = field.pop();
         field.push(`${which}-${field.length}`);
-        field.push(endField!);
       }
       if (action === 'decrement') {
-        const endField = field.pop();
         field.pop();
-        field.push(endField!);
       }
     }
   }));
