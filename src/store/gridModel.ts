@@ -26,16 +26,29 @@ const coordinatesModel = types.model('coordinates', {
   row: types.string
 });
 
-const dragModel = types.model('drag', {
-  start: types.model({
-    column: types.number,
-    row: types.number
-  }),
-  end: types.model({
-    column: types.number,
-    row: types.number
+const dragModel = types
+  .model('drag', {
+    _start: types.model({
+      column: types.number,
+      row: types.number
+    }),
+    end: types.model({
+      column: types.number,
+      row: types.number
+    })
   })
-});
+  .views(self => ({
+    get start() {
+      const start = { ...self._start };
+      if (self.end.column < self._start.column) {
+        start.column++;
+      }
+      if (self.end.row < self._start.row) {
+        start.row++;
+      }
+      return start;
+    }
+  }));
 
 const elementModel = types.model('element', {
   start: coordinatesModel,
@@ -85,7 +98,7 @@ export const gridModel = types
       }
     },
     startDrag(column: number, row: number) {
-      self.drag = dragModel.create({ start: { column, row }, end: { column: column + 1, row: row + 1 } });
+      self.drag = dragModel.create({ _start: { column, row }, end: { column: column + 1, row: row + 1 } });
     },
     updateField(name: string, value: string | number) {
       if (typeof self[name] === 'number') {
