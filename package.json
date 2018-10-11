@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/classnames": "^2.2.6",
+    "classnames": "^2.2.6",
+    "global": "^4.3.2",
     "mobx": "^5.0.0",
     "mobx-react": "^5.2.8",
     "mobx-state-tree": "^3.5.0",
+    "now": "^11.4.6",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts-ts": "4.0.8",

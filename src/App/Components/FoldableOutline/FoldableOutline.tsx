@@ -12,8 +12,8 @@ export class FoldableOutline extends React.Component<{ store?: IStore }, {}> {
     const { store } = this.props;
     return (
       <>
-        {store!.grids.map(grid => (
-          <GridForm gridStore={grid} />
+        {store!.grids.map((grid, index) => (
+          <GridForm key={`grid-styles-${index}`} gridStore={grid} />
         ))}
       </>
     );

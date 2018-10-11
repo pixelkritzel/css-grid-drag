@@ -6,8 +6,9 @@ $border-color: darken($background-color, 20%);
   border: 1px solid $border-color;
   transition: all 0.3s;
 
-  &:hover {
-    background-color: $border-color;
-    border-color: darken($border-color, 20%);
+  &.isDragOver {
+    $is-drag-over-background-color: darken($background-color, 60%);
+    background-color: $is-drag-over-background-color;
+    border-color: darken($is-drag-over-background-color, 20%);
   }
 }

@@ -1,5 +1,6 @@
 import { types } from 'mobx-state-tree';
 import * as uuid from 'uuid/v4';
+import { IResource, resourceModel } from './resourceModel';
 
 export const defaultGrid = {
   noOfColumns: 12,
@@ -26,8 +27,8 @@ const coordinatesModel = types.model('coordinates', {
   row: types.string
 });
 
-const dragModel = types
-  .model('drag', {
+const placementModel = types
+  .model('placementModel', {
     _start: types.model({
       column: types.number,
       row: types.number
@@ -35,7 +36,8 @@ const dragModel = types
     end: types.model({
       column: types.number,
       row: types.number
-    })
+    }),
+    resource: types.reference(resourceModel)
   })
   .views(self => ({
     get start() {
@@ -52,7 +54,8 @@ const dragModel = types
 
 const elementModel = types.model('element', {
   start: coordinatesModel,
-  end: coordinatesModel
+  end: coordinatesModel,
+  resource: types.reference(resourceModel)
 });
 
 export type IElement = typeof elementModel.Type;
@@ -65,26 +68,27 @@ export const gridModel = types
     gridGap: '',
     cellWidth: 1,
     cellHeight: 1,
-    drag: types.maybe(dragModel),
+    placement: types.maybe(placementModel),
     elements: types.array(elementModel)
   })
   .actions(self => ({
     addElement() {
-      if (self.drag) {
-        const { start: dragStart, end: dragEnd } = self.drag;
+      if (self.placement) {
+        const { start: dragStart, end: dragEnd, resource } = self.placement;
         const data = {
           start: { column: self.columns[dragStart.column], row: self.rows[dragStart.row] },
-          end: { column: self.columns[dragEnd.column], row: self.rows[dragEnd.row] }
+          end: { column: self.columns[dragEnd.column], row: self.rows[dragEnd.row] },
+          resource
         };
         self.elements.push(elementModel.create(data));
       }
       this.resetDrag();
     },
     resetDrag() {
-      self.drag = undefined;
+      self.placement = undefined;
     },
     moveDrag(column: number, row: number) {
-      const drag = self.drag!;
+      const drag = self.placement!;
       const { start, end } = drag;
       if (column < start.column) {
         end.column = column;
@@ -97,8 +101,12 @@ export const gridModel = types
         end.row = row + 1;
       }
     },
-    startDrag(column: number, row: number) {
-      self.drag = dragModel.create({ _start: { column, row }, end: { column: column + 1, row: row + 1 } });
+    startElementPlacement(column: number, row: number, resource: IResource) {
+      self.placement = placementModel.create({
+        _start: { column, row },
+        end: { column: column + 1, row: row + 1 },
+        resource
+      });
     },
     updateField(name: string, value: string | number) {
       if (typeof self[name] === 'number') {
@@ -106,8 +114,8 @@ export const gridModel = types
         if (isNaN(value) || value < 0) {
           return;
         }
-        self[name] = value;
       }
+      self[name] = value;
     },
     changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement') {
       const field = self[which];

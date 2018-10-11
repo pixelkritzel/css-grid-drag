@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Cell } from './Cell';
-import { DragArea } from './DragArea';
+import { Placement } from './Placement';
 
 import { IGridModel } from 'src/store/gridModel';
 
@@ -31,7 +31,7 @@ export class Guides extends React.Component<{ gridStore: IGridModel; columns: st
     const { gridStore, columns, rows } = this.props;
     return (
       <>
-        <DragArea gridStore={gridStore} />
+        <Placement gridStore={gridStore} />
         {generateCells(gridStore, columns, rows)}
       </>
     );

@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
+import { observable } from 'mobx';
+import * as cx from 'classnames';
 
 import { IGridModel } from 'src/store/gridModel';
+import { IUiStore } from 'src/store/uiStore';
 
 import CSS from './Cell.module.scss';
 
@@ -11,17 +14,38 @@ type ICellProps = {
   columnIndex: number;
   rowName: string;
   rowIndex: number;
+  uiStore?: IUiStore;
 };
 
+@inject('uiStore')
 @observer
 export class Cell extends React.Component<ICellProps, {}> {
+  @observable
+  isDragOver = false;
+
+  onDragEnter = (event: React.DragEvent<HTMLElement>) => {
+    event.preventDefault();
+    this.isDragOver = true;
+  };
+
+  onDragLeave = () => {
+    this.isDragOver = false;
+  };
+
+  onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    const { columnIndex, rowIndex, gridStore, uiStore } = this.props;
+    gridStore!.startElementPlacement(columnIndex, rowIndex, uiStore!.draggedResource!);
+    uiStore!.dropDraggedResource();
+    this.isDragOver = false;
+  };
+
   moveDrag = () => {
     const { columnIndex, rowIndex, gridStore } = this.props;
     gridStore.moveDrag(columnIndex, rowIndex);
   };
 
   render() {
-    const { columnName, columnIndex, rowName, rowIndex, gridStore } = this.props;
+    const { columnName, rowName, gridStore, uiStore } = this.props;
     const style = {
       gridColumn: `${columnName} / span 1`,
       gridRow: `${rowName} / span 1`,
@@ -29,11 +53,14 @@ export class Cell extends React.Component<ICellProps, {}> {
     };
     return (
       <div
-        className={CSS.cell}
+        className={cx(CSS.cell, { [CSS.isDragOver]: this.isDragOver })}
         style={style}
-        onMouseDown={_ => gridStore.startDrag(columnIndex, rowIndex)}
-        onMouseEnter={gridStore.drag ? this.moveDrag : undefined}
-        onMouseUp={gridStore.drag ? () => gridStore.addElement() : undefined}
+        onDragEnter={uiStore!.draggedResource ? this.onDragEnter : undefined}
+        onDragLeave={uiStore!.draggedResource ? this.onDragLeave : undefined}
+        onDragOver={uiStore!.draggedResource ? e => e.preventDefault() : undefined}
+        onDrop={uiStore!.draggedResource ? this.onDrop : undefined}
+        onMouseEnter={gridStore.placement ? this.moveDrag : undefined}
+        onMouseUp={gridStore.placement ? () => gridStore.addElement() : undefined}
       />
     );
   }
