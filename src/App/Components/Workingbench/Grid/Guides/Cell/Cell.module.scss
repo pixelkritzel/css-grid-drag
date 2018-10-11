@@ -1,9 +1,8 @@
-$background-color: hsla(192, 43, 68, 0.15);
+$background-color: hsla(192, 43, 68, 0.5);
 $border-color: darken($background-color, 20%);
 
 .cell {
-  background-color: $background-color;
-  border: 1px solid $border-color;
+  border: 1px solid $background-color;
   transition: all 0.3s;
 
   &.isDragOver {
