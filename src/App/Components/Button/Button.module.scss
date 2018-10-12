@@ -3,7 +3,7 @@
 .button {
   border: none;
   margin: 0;
-  padding: 0;
+  padding: $spacer/2 $spacer;
   width: auto;
   overflow: visible;
 
@@ -39,6 +39,7 @@
   }
 
   &.icon {
+    padding: 0;
     & > svg {
       display: block;
     }

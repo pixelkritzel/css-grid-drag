@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree';
+import { onPatch, types } from 'mobx-state-tree';
 
 import { defaultGrid, gridModel, IGridData, createGridModelInitialData } from './gridModel';
 import { resourceModel } from './resourceModel';
@@ -16,6 +16,9 @@ const storeModel = types
   .actions(self => ({
     addGrid(gridData: IGridData) {
       self.grids.push(gridModel.create(createGridModelInitialData(gridData)));
+    },
+    addRessource(url: string) {
+      self.resources.push(resourceModel.create({ url }));
     }
   }));
 
@@ -26,3 +29,5 @@ function createStore(initialData: {} = defaultInitialData) {
 export type IStore = typeof storeModel.Type;
 
 export const store = createStore();
+
+onPatch(store, () => console.log(JSON.stringify(store, undefined, 2)));

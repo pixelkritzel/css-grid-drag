@@ -3,4 +3,5 @@
 .resourceItem {
   display: block;
   max-height: calc(100% - 2 * #{$spacer});
+  margin-right: $spacer/2;
 }

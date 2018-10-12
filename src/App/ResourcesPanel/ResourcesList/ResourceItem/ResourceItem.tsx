@@ -13,7 +13,7 @@ export class ResourceItem extends React.Component<{ resource: IResource; uiStore
     return (
       <img
         draggable
-        onDragStart={event => uiStore!.setDraggedResource(resource)}
+        onDragStart={() => uiStore!.setDraggedResource(resource)}
         className={css.resourceItem}
         alt=""
         src={resource.url}

@@ -1,0 +1,9 @@
+@import '~src/scss/variables';
+
+.textarea {
+  display: block;
+  width: 100%;
+  resize: none;
+  overflow: auto;
+  border: 1px solid $border-color;
+}
