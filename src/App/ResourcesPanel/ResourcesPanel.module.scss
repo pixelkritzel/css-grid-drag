@@ -1,0 +1,7 @@
+@import '~src/scss/variables';
+
+.resourcesPanel {
+  display: flex;
+  height: inherit;
+  padding: $spacer;
+}

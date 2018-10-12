@@ -1,0 +1,9 @@
+@import '~src/scss/variables';
+
+.resourcesTools {
+  padding-right: $spacer;
+
+  > * {
+    margin-bottom: $spacer/2;
+  }
+}

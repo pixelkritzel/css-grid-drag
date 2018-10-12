@@ -1,3 +1,5 @@
+@import '~src/scss/variables';
+
 $menu-height: 50px;
 $stylespanel-width: 200px;
 $resourcespanel-height: 200px;
@@ -40,5 +42,6 @@ $resourcespanel-height: 200px;
   bottom: 0;
   width: 100%;
   height: $resourcespanel-height;
-  background-color: indianred;
+  border: 1px solid $border-color;
+  box-shadow: 0px 0px 2px $border-color;
 }

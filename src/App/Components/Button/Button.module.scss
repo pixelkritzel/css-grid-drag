@@ -1,0 +1,46 @@
+@import '~src/scss/variables';
+
+.button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+
+  background: transparent;
+
+  /* inherit font & color from ancestor */
+  color: inherit;
+  font: inherit;
+
+  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+  line-height: normal;
+
+  /* Corrects font smoothing for webkit */
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+
+  /* Corrects inability to style clickable `input` types in iOS */
+  -webkit-appearance: none;
+
+  transition: 0.3s background-color;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: $gray-200;
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+    background-color: $gray-500;
+    box-shadow: 2px 2px 4px $gray-200;
+  }
+
+  &.icon {
+    & > svg {
+      display: block;
+    }
+  }
+}
