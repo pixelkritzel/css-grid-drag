@@ -1,12 +1,23 @@
-import { onPatch, types } from 'mobx-state-tree';
+import { destroy, onSnapshot, types } from 'mobx-state-tree';
 
 import { defaultGrid, gridModel, IGridData, createGridModelInitialData } from './gridModel';
-import { resourceModel } from './resourceModel';
+import { resourceModel, IResource } from './resourceModel';
 
 const defaultInitialData = {
   grids: [createGridModelInitialData(defaultGrid)],
   resources: [{ url: 'https://placekitten.com/300/400' }, { url: 'https://placekitten.com/400/300' }]
 };
+
+let initialData: typeof storeModel.CreationType;
+
+const localStorageKey = 'css-grid-drag-store';
+
+const localData = localStorage.getItem(localStorageKey);
+if (localData) {
+  initialData = JSON.parse(localData);
+} else {
+  initialData = defaultInitialData;
+}
 
 const storeModel = types
   .model('store', {
@@ -19,15 +30,18 @@ const storeModel = types
     },
     addRessource(url: string) {
       self.resources.push(resourceModel.create({ url }));
+    },
+    deleteResource(resource: IResource) {
+      destroy(resource);
     }
   }));
 
-function createStore(initialData: {} = defaultInitialData) {
-  return storeModel.create(initialData);
+function createStore(data: {} = initialData) {
+  return storeModel.create(data);
 }
 
 export type IStore = typeof storeModel.Type;
 
 export const store = createStore();
 
-onPatch(store, () => console.log(JSON.stringify(store, undefined, 2)));
+onSnapshot(store, snapShot => localStorage.setItem(localStorageKey, JSON.stringify(snapShot, undefined, 2)));

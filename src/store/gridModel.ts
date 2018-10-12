@@ -53,6 +53,7 @@ const placementModel = types
   }));
 
 const elementModel = types.model('element', {
+  id: types.optional(types.identifier, uuid),
   start: coordinatesModel,
   end: coordinatesModel,
   resource: types.reference(resourceModel)

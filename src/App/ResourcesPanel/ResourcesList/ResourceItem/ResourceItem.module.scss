@@ -1,7 +1,15 @@
 @import '~src/scss/variables';
 
 .resourceItem {
-  display: block;
-  max-height: calc(100% - 2 * #{$spacer});
+  display: flex;
+  height: inherit;
   margin-right: $spacer/2;
+}
+
+.resourceImage {
+  max-height: calc(100% - 2 * #{$spacer});
+}
+
+.resourceItemTools {
+  padding: 0 4px;
 }
