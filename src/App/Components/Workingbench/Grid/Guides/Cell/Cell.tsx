@@ -34,14 +34,14 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     const { columnIndex, rowIndex, gridStore, uiStore } = this.props;
-    gridStore!.startElementPlacement(columnIndex, rowIndex, uiStore!.draggedResource!);
+    uiStore!.startElementPlacement(columnIndex, rowIndex, uiStore!.draggedResource!, gridStore);
     uiStore!.dropDraggedResource();
     this.isDragOver = false;
   };
 
   moveDrag = () => {
-    const { columnIndex, rowIndex, gridStore } = this.props;
-    gridStore.moveDrag(columnIndex, rowIndex);
+    const { columnIndex, rowIndex, uiStore } = this.props;
+    uiStore!.moveDrag(columnIndex, rowIndex);
   };
 
   render() {
@@ -59,8 +59,8 @@ export class Cell extends React.Component<ICellProps, {}> {
         onDragLeave={uiStore!.draggedResource ? this.onDragLeave : undefined}
         onDragOver={uiStore!.draggedResource ? e => e.preventDefault() : undefined}
         onDrop={uiStore!.draggedResource ? this.onDrop : undefined}
-        onMouseEnter={gridStore.placement ? this.moveDrag : undefined}
-        onMouseUp={gridStore.placement ? () => gridStore.addElement() : undefined}
+        onMouseEnter={uiStore!.placement ? this.moveDrag : undefined}
+        onMouseUp={uiStore!.placement ? () => uiStore!.addElementToGrid() : undefined}
       />
     );
   }

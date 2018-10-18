@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IElement } from 'src/store/gridModel';
+import { IElement } from 'src/store/elementModel';
 
 export class Element extends React.Component<{ element: IElement }, {}> {
   render() {
