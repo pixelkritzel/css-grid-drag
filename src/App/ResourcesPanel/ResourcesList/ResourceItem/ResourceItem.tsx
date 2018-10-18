@@ -13,7 +13,7 @@ import css from './ResourceItem.module.scss';
 
 @inject('store', 'uiStore')
 export class ResourceItem extends React.Component<{ resource: IResource; store?: IStore; uiStore?: IUiStore }> {
-  delteResource = () => {
+  deleteResource = () => {
     const { resource, store } = this.props;
     if (confirm('Yo you really want to remove the resource from the project?')) {
       store!.deleteResource(resource);
@@ -31,7 +31,7 @@ export class ResourceItem extends React.Component<{ resource: IResource; store?:
           alt=""
           src={resource.url}
         />
-        <div className={css.resourceItemTools} onClick={this.delteResource}>
+        <div className={css.resourceItemTools} onClick={this.deleteResource}>
           <Button icon>
             <DeleteIcon />
           </Button>

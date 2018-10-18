@@ -1,0 +1,15 @@
+@import '~src/scss/variables';
+
+.elementForm {
+  margin-bottom: $spacer;
+}
+
+.elementFormBody {
+  &.closed {
+    display: none;
+  }
+}
+
+.img {
+  max-width: 40px;
+}

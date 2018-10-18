@@ -1,7 +1,7 @@
-import { types } from 'mobx-state-tree';
+import { types, destroy } from 'mobx-state-tree';
 import * as uuid from 'uuid/v4';
 
-import { elementModel } from './elementModel';
+import { elementModel, IElement } from './elementModel';
 
 export const defaultGrid = {
   noOfColumns: 12,
@@ -34,6 +34,9 @@ export const gridModel = types
     elements: types.array(elementModel)
   })
   .actions(self => ({
+    addElement(element: IElement) {
+      self.elements.push(element);
+    },
     updateField(name: string, value: string | number) {
       if (typeof self[name] === 'number') {
         value = Number(value);
@@ -51,6 +54,9 @@ export const gridModel = types
       if (action === 'decrement') {
         field.pop();
       }
+    },
+    removeElement(element: IElement) {
+      destroy(element);
     }
   }));
 

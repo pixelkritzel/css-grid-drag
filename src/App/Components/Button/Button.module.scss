@@ -1,13 +1,16 @@
 @import '~src/scss/variables';
 
+$button-color: $white;
+$border-color: $gray-300;
+
 .button {
-  border: none;
+  border: 1px solid $border-color;
   margin: 0;
   padding: $spacer/2 $spacer;
   width: auto;
   overflow: visible;
 
-  background: transparent;
+  background: $button-color;
 
   /* inherit font & color from ancestor */
   color: inherit;
@@ -25,6 +28,10 @@
 
   transition: 0.3s background-color;
 
+  svg {
+    vertical-align: top;
+  }
+
   &:hover,
   &:active,
   &:focus {
@@ -38,10 +45,29 @@
     box-shadow: 2px 2px 4px $gray-200;
   }
 
+  &.fullWidth {
+    display: block;
+    width: 100%;
+  }
+
   &.icon {
     padding: 0;
+    border: none;
+
     & > svg {
       display: block;
+    }
+  }
+
+  &.style-danger {
+    color: $white;
+    border: none;
+    background-color: $danger;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: darken($danger, 10%);
     }
   }
 }

@@ -23,10 +23,10 @@ export class Grid extends React.Component<{ grid: IGridModel }, {}> {
 
     return (
       <div style={gridStyles}>
-        {grid.elements.map(element => (
-          <Element key={`element-${element.id}`} element={element} />
-        ))}
         <Guides gridStore={grid} columns={grid.columns} rows={grid.rows} />
+        {grid.elements.map(element => (
+          <Element key={`element-${element.id}`} element={element} grid={grid} />
+        ))}
       </div>
     );
   }

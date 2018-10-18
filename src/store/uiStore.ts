@@ -2,7 +2,7 @@ import { types } from 'mobx-state-tree';
 
 import { IResource, resourceModel } from './resourceModel';
 import { gridModel, IGridModel } from './gridModel';
-import { elementModel } from './elementModel';
+import { elementModel, IElement } from './elementModel';
 
 const placementModel = types
   .model('placementModel', {
@@ -33,7 +33,8 @@ const placementModel = types
 const uiModel = types
   .model('ui', {
     draggedResource: types.maybe(types.reference(resourceModel)),
-    placement: types.maybe(placementModel)
+    placement: types.maybe(placementModel),
+    selectedElement: types.maybe(types.reference(elementModel))
   })
   .actions(self => ({
     dropDraggedResource() {
@@ -53,7 +54,8 @@ const uiModel = types
           end: { column: self.placement.grid.columns[dragEnd.column], row: self.placement.grid.rows[dragEnd.row] },
           resource
         };
-        self.placement.grid.elements.push(elementModel.create(data));
+        const element = elementModel.create(data);
+        self.placement.grid.addElement(element);
       }
       this.resetDrag();
     },
@@ -81,6 +83,12 @@ const uiModel = types
         resource,
         grid
       });
+    },
+    setSelectedElement(element: IElement) {
+      self.selectedElement = element;
+    },
+    unsetSelectedElement() {
+      self.selectedElement = undefined;
     }
   }));
 
