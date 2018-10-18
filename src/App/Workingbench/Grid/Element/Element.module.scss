@@ -1,3 +1,9 @@
+.element {
+  &:focus {
+    outline: none;
+  }
+}
+
 .selected {
   border: 3px dashed lightgreen;
 }

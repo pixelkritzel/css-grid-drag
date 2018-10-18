@@ -13,10 +13,23 @@ import { IGridModel } from 'src/store/gridModel';
 export class Element extends React.Component<{ element: IElement; grid: IGridModel; uiStore?: IUiStore }, {}> {
   isGlobalOnClickBound = false;
 
+  bindKeyDown = () => {
+    const { element, uiStore } = this.props;
+    if (uiStore!.selectedElement === element) {
+      return this.onKeyDown;
+    }
+    return undefined;
+  };
+
   onClick = (event: PointerEvent) => {
-    console.log('onClick runs', Date.now());
     const target = event.target as HTMLDivElement;
     if (!target.matches('.element')) {
+      this.props.uiStore!.unsetSelectedElement();
+    }
+  };
+
+  onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape') {
       this.props.uiStore!.unsetSelectedElement();
     }
   };
@@ -53,9 +66,11 @@ export class Element extends React.Component<{ element: IElement; grid: IGridMod
     };
     return (
       <div
-        className={cx('element', { [CSS.selected]: isSelected })}
+        className={cx('element', CSS.element, { [CSS.selected]: isSelected })}
         style={style}
         onClick={() => uiStore!.setSelectedElement(element)}
+        onKeyDown={this.bindKeyDown()}
+        tabIndex={0}
       />
     );
   }
