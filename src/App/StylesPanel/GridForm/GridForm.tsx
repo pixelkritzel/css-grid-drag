@@ -80,6 +80,7 @@ export class GridForm extends React.Component<{ gridStore: IGridModel; uiStore?:
             onValueChange={this.onValueChange}
           />
           <InputField
+            inline
             label="Cell Width"
             name="cellWidth"
             type="number"
@@ -87,6 +88,7 @@ export class GridForm extends React.Component<{ gridStore: IGridModel; uiStore?:
             onValueChange={this.onValueChange}
           />
           <InputField
+            inline
             label="Cell Height"
             name="cellHeight"
             type="number"
