@@ -70,4 +70,13 @@ $border-color: $gray-300;
       background-color: darken($danger, 10%);
     }
   }
+
+  &.style-text {
+    padding: 0;
+    display: inline;
+    background: none;
+    border: none;
+    color: inherit;
+    -webkit-appearance: none;
+  }
 }

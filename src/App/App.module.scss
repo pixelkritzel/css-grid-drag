@@ -33,7 +33,6 @@ $resourcespanel-height: 200px;
   right: 0;
   width: $stylespanel-width;
   height: calc(100% - #{$menu-height} - #{$resourcespanel-height});
-  background-color: silver;
 }
 
 .resourcesPanel {

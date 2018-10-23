@@ -1,6 +1,9 @@
+@import '~src/scss/variables';
+
 .stylesPanel {
   height: 100%;
   width: 100%;
+  padding: $spacer;
   overflow-x: hidden;
   overflow-y: scroll;
 }

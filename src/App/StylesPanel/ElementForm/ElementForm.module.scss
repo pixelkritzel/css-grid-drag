@@ -13,3 +13,12 @@
 .img {
   max-width: 40px;
 }
+
+.title {
+  position: relative;
+  left: -6px;
+  svg {
+    position: relative;
+    top: -3px;
+  }
+}

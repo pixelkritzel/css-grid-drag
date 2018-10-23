@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 
 import { Cell } from './Cell';
 import { Placement } from './Placement';
@@ -26,6 +27,7 @@ function generateCells(gridStore: IGridModel, columns: string[], rows: string[])
   return cells;
 }
 
+@observer
 export class Guides extends React.Component<{ gridStore: IGridModel; columns: string[]; rows: string[] }, {}> {
   render() {
     const { gridStore, columns, rows } = this.props;

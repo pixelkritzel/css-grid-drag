@@ -1,0 +1,14 @@
+@import '~src/scss/variables';
+
+.inline {
+  display: flex;
+
+  label {
+    white-space: nowrap;
+    margin-right: $spacer;
+  }
+
+  input {
+    min-width: 0;
+  }
+}

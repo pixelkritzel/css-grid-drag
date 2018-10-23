@@ -14,8 +14,8 @@ export const defaultGrid = {
 export type IGridData = typeof defaultGrid;
 
 export function createGridModelInitialData({ noOfColumns, noOfRows, ...theRest }: IGridData) {
-  const columns = [...Array(noOfColumns + 1).keys()].map((_, index) => 'columns-' + index);
-  const rows = [...Array(noOfRows + 1).keys()].map((_, index) => 'rows-' + index);
+  const columns = [...Array(noOfColumns + 1).keys()].map(_ => 'column-' + uuid());
+  const rows = [...Array(noOfRows + 1).keys()].map(_ => 'row-' + uuid());
   return {
     columns,
     rows,
@@ -46,13 +46,23 @@ export const gridModel = types
       }
       self[name] = value;
     },
-    changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement') {
+    changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement', position: 'start' | 'end') {
       const field = self[which];
       if (action === 'increment') {
-        field.push(`${which}-${field.length}`);
+        const newElement = `${which}-${uuid()}`;
+        if (position === 'start') {
+          field.unshift(newElement);
+        } else {
+          field.push(newElement);
+        }
       }
       if (action === 'decrement') {
-        field.pop();
+        if (position === 'start') {
+          field.shift();
+        }
+        {
+          field.pop();
+        }
       }
     },
     removeElement(element: IElement) {
