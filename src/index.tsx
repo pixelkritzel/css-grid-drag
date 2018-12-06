@@ -6,7 +6,9 @@ import { Provider } from 'mobx-react';
 import { App } from './App/index';
 
 import { store } from './store';
-import { uiStore } from './store/uiStore';
+import { uiModel } from './store/uiStore';
+
+const uiStore = uiModel.create({ shownGrid: store.grids[0] });
 
 import './scss/style.scss';
 

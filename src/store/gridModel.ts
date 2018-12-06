@@ -1,6 +1,7 @@
 import { types, destroy } from 'mobx-state-tree';
 import * as uuid from 'uuid/v4';
 
+import { cellModel } from './cellModel';
 import { elementModel, IElement } from './elementModel';
 
 export const defaultGrid = {
@@ -33,6 +34,27 @@ export const gridModel = types
     cellHeight: 1,
     elements: types.array(elementModel)
   })
+  .views(self => ({
+    get cells() {
+      const { columns, rows } = self;
+      const cells = [];
+      for (let i = 0; i < rows.length - 1; i++) {
+        // tslint:disable-next-line prefer-for-of
+        for (let j = 0; j < columns.length - 1; j++) {
+          cells.push(
+            cellModel.create({
+              id: `cell-${columns[j]}-${rows[i]}`,
+              columnName: columns[j],
+              columnIndex: j,
+              rowName: rows[i],
+              rowIndex: i
+            })
+          );
+        }
+      }
+      return cells;
+    }
+  }))
   .actions(self => ({
     addElement(element: IElement) {
       self.elements.push(element);

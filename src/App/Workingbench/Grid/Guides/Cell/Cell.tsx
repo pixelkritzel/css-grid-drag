@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { observable } from 'mobx';
 import * as cx from 'classnames';
 
+import { ICellModel } from 'src/store/cellModel';
 import { IGridModel } from 'src/store/gridModel';
 import { IUiStore } from 'src/store/uiStore';
 
@@ -10,10 +11,7 @@ import CSS from './Cell.module.scss';
 
 type ICellProps = {
   gridStore: IGridModel;
-  columnName: string;
-  columnIndex: number;
-  rowName: string;
-  rowIndex: number;
+  cellInstance: ICellModel;
   uiStore?: IUiStore;
 };
 
@@ -25,27 +23,36 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   onDragEnter = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
+    const { cellInstance, uiStore } = this.props;
     this.isDragOver = true;
+    uiStore!.dragOverCell(cellInstance);
   };
 
   onDragLeave = () => {
+    const { uiStore } = this.props;
+    this.isDragOver = false;
+    uiStore!.dragOverCell(undefined);
+  };
+
+  onDrop = () => {
+    const { cellInstance, uiStore } = this.props;
+    uiStore!.dropOverCell(cellInstance);
     this.isDragOver = false;
   };
 
-  onDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    const { columnIndex, rowIndex, gridStore, uiStore } = this.props;
-    uiStore!.startElementPlacement(columnIndex, rowIndex, uiStore!.draggedResource!, gridStore);
-    uiStore!.dropDraggedResource();
-    this.isDragOver = false;
+  onMouseEnter = () => {
+    const { cellInstance, uiStore } = this.props;
+    uiStore!.mouseOverCell(cellInstance);
   };
 
-  moveDrag = () => {
-    const { columnIndex, rowIndex, uiStore } = this.props;
-    uiStore!.moveDrag(columnIndex, rowIndex);
+  onMouseUp = () => {
+    const { cellInstance, uiStore } = this.props;
+    uiStore!.mouseUpCell(cellInstance);
   };
 
   render() {
-    const { columnName, rowName, gridStore, uiStore } = this.props;
+    const { cellInstance, gridStore } = this.props;
+    const { columnName, rowName } = cellInstance;
     const style = {
       gridColumn: `${columnName} / span 1`,
       gridRow: `${rowName} / span 1`,
@@ -55,12 +62,12 @@ export class Cell extends React.Component<ICellProps, {}> {
       <div
         className={cx(CSS.cell, { [CSS.isDragOver]: this.isDragOver })}
         style={style}
-        onDragEnter={uiStore!.draggedResource ? this.onDragEnter : undefined}
-        onDragLeave={uiStore!.draggedResource ? this.onDragLeave : undefined}
-        onDragOver={uiStore!.draggedResource ? e => e.preventDefault() : undefined}
-        onDrop={uiStore!.draggedResource ? this.onDrop : undefined}
-        onMouseEnter={uiStore!.placement ? this.moveDrag : undefined}
-        onMouseUp={uiStore!.placement ? () => uiStore!.addElementToGrid() : undefined}
+        onDragOver={e => e.preventDefault()}
+        onDragEnter={this.onDragEnter}
+        onDragLeave={this.onDragLeave}
+        onDrop={this.onDrop}
+        onMouseEnter={this.onMouseEnter}
+        onMouseUp={this.onMouseUp}
       />
     );
   }
