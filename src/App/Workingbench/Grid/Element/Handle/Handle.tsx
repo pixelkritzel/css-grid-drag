@@ -26,11 +26,11 @@ export class Handle extends React.Component<IHandleProps> {
 
   moveRight = () => {
     const { store } = this.props;
-    const { draggedOverCell, selectedElement, shownGrid: shownMediaQuery } = store!;
+    const { draggedOverCell, selectedElement, shownGrid } = store!;
     store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
-      const cellRight = shownMediaQuery.cells.find(
-        cell => cell.columnName === shownMediaQuery.columns[draggedOverCell.columnIndex + 1]
+      const cellRight = shownGrid.cells.find(
+        cell => cell.columnName === shownGrid.columns[draggedOverCell.columnIndex + 1]
       );
       if (cellRight) {
         selectedElement!.moveRight(cellRight);
@@ -40,12 +40,10 @@ export class Handle extends React.Component<IHandleProps> {
 
   moveBottom = () => {
     const { store } = this.props;
-    const { draggedOverCell, selectedElement, shownGrid: shownMediaQuery } = store!;
+    const { draggedOverCell, selectedElement, shownGrid } = store!;
     store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
-      const cellBelow = shownMediaQuery.cells.find(
-        cell => cell.rowName === shownMediaQuery.rows[draggedOverCell.rowIndex + 1]
-      );
+      const cellBelow = shownGrid.cells.find(cell => cell.rowName === shownGrid.rows[draggedOverCell.rowIndex + 1]);
       if (cellBelow) {
         selectedElement!.moveBottom(cellBelow);
       }

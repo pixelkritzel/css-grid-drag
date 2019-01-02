@@ -10,11 +10,11 @@ import { IStore } from 'src/store/store';
 @observer
 export class Guides extends React.Component<{ store?: IStore }> {
   render() {
-    const { shownGrid: shownMediaQuery } = this.props.store!;
+    const { shownGrid } = this.props.store!;
     return (
       <>
         <Placement />
-        {shownMediaQuery.cells.map(cellInstance => (
+        {shownGrid.cells.map(cellInstance => (
           <Cell key={cellInstance.id} cellInstance={cellInstance} />
         ))}
       </>

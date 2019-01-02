@@ -50,12 +50,12 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   render() {
     const { cellInstance, store } = this.props;
-    const { isCellHighlight, isGuidesFront, shownGrid: shownMediaQuery } = store!;
+    const { isCellHighlight, isGuidesFront, shownGrid } = store!;
     const { columnName, rowName } = cellInstance;
     const style = {
       gridColumn: `${columnName} / span 1`,
       gridRow: `${rowName} / span 1`,
-      paddingBottom: (shownMediaQuery.cellHeight / shownMediaQuery.cellWidth) * 100 + '%'
+      paddingBottom: (shownGrid.cellHeight / shownGrid.cellWidth) * 100 + '%'
     };
     return (
       <div
