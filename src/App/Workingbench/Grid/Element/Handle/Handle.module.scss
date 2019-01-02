@@ -1,0 +1,35 @@
+.handle {
+  position: absolute;
+
+  &.moveTop,
+  &.moveBottom {
+    left: 0;
+    width: 100%;
+    height: 1px;
+    cursor: row-resize;
+  }
+
+  &.moveTop {
+    top: 0;
+  }
+
+  &.moveBottom {
+    bottom: 0;
+  }
+
+  &.moveLeft,
+  &.moveRight {
+    top: 0;
+    height: 100%;
+    width: 1px;
+    cursor: col-resize;
+  }
+
+  &.moveLeft {
+    left: 0;
+  }
+
+  &.moveRight {
+    right: 0;
+  }
+}

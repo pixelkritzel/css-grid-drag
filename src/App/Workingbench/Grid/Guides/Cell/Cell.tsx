@@ -25,7 +25,7 @@ export class Cell extends React.Component<ICellProps, {}> {
     event.preventDefault();
     const { cellInstance, uiStore } = this.props;
     this.isDragOver = true;
-    uiStore!.dragOverCell(cellInstance);
+    setTimeout(() => uiStore!.dragOverCell(cellInstance));
   };
 
   onDragLeave = () => {
@@ -51,7 +51,8 @@ export class Cell extends React.Component<ICellProps, {}> {
   };
 
   render() {
-    const { cellInstance, gridStore } = this.props;
+    const { cellInstance, gridStore, uiStore } = this.props;
+    const { isCellHighlight, isGuidesFront } = uiStore!;
     const { columnName, rowName } = cellInstance;
     const style = {
       gridColumn: `${columnName} / span 1`,
@@ -60,7 +61,10 @@ export class Cell extends React.Component<ICellProps, {}> {
     };
     return (
       <div
-        className={cx(CSS.cell, { [CSS.isDragOver]: this.isDragOver })}
+        className={cx(CSS.cell, {
+          [CSS.isDragOver]: this.isDragOver && isCellHighlight,
+          [CSS.isGuidesFront]: isGuidesFront
+        })}
         style={style}
         onDragOver={e => e.preventDefault()}
         onDragEnter={this.onDragEnter}

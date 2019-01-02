@@ -8,19 +8,25 @@ import { IResource, resourceModel } from './resourceModel';
 
 export const uiModel = types
   .model('ui', {
+    currentAction: types.maybe(
+      types.enumeration(['ELEMENT_MOVE', 'START_PLACEMENT', 'MOVE_PLACEMENT', 'RESOURCE_DRAG'])
+    ),
+    draggedOverCell: types.maybe(types.reference(cellModel)),
     draggedResource: types.maybe(types.reference(resourceModel)),
+    droppedOverCell: types.maybe(types.reference(cellModel)),
     placement: types.maybe(placementModel),
     selectedElement: types.maybe(types.reference(elementModel)),
-    draggedOverCell: types.maybe(types.reference(cellModel)),
-    droppedOverCell: types.maybe(types.reference(cellModel)),
-    currentAction: types.maybe(types.enumeration(['START_PLACEMENT', 'MOVE_PLACEMENT'])),
     shownGrid: types.reference(gridModel)
   })
-  .actions(self => ({
-    setDraggedResource(resource: IResource) {
-      self.draggedResource = resource;
-      self.currentAction = 'START_PLACEMENT';
+  .views(self => ({
+    get isCellHighlight() {
+      return self.currentAction && self.currentAction !== 'ELEMENT_MOVE';
     },
+    get isGuidesFront() {
+      return !!self.currentAction;
+    }
+  }))
+  .actions(self => ({
     dragOverCell(cellInstance: ICellModel | undefined) {
       self.draggedOverCell = cellInstance;
     },
@@ -39,7 +45,18 @@ export const uiModel = types
       if (self.currentAction === 'MOVE_PLACEMENT' && self.placement) {
         self.placement.addElementToGrid();
         self.placement = undefined;
+        self.currentAction = undefined;
       }
+    },
+    setCurrentAction(actionName: typeof self.currentAction) {
+      self.currentAction = actionName;
+    },
+    setDraggedResource(resource: IResource) {
+      self.draggedResource = resource;
+      self.currentAction = 'START_PLACEMENT';
+    },
+    setSelectedElement(element: IElement) {
+      self.selectedElement = element;
     },
     startElementPlacement() {
       const { draggedResource: resource, droppedOverCell, shownGrid: grid } = self;
@@ -54,9 +71,6 @@ export const uiModel = types
         self.draggedResource = undefined;
         self.currentAction = 'MOVE_PLACEMENT';
       }
-    },
-    setSelectedElement(element: IElement) {
-      self.selectedElement = element;
     },
     unsetSelectedElement() {
       self.selectedElement = undefined;

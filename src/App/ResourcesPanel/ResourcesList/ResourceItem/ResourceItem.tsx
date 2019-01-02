@@ -20,17 +20,17 @@ export class ResourceItem extends React.Component<{ resource: IResource; store?:
     }
   };
 
-  render() {
+  onDragStart = () => {
     const { resource, uiStore } = this.props;
+    uiStore!.setCurrentAction('RESOURCE_DRAG');
+    uiStore!.setDraggedResource(resource);
+  };
+
+  render() {
+    const { resource } = this.props;
     return (
       <div className={css.resourceItem}>
-        <img
-          className={css.resourceImage}
-          draggable
-          onDragStart={() => uiStore!.setDraggedResource(resource)}
-          alt=""
-          src={resource.url}
-        />
+        <img className={css.resourceImage} draggable onDragStart={this.onDragStart} alt="" src={resource.url} />
         <div className={css.resourceItemTools} onClick={this.deleteResource}>
           <Button icon>
             <DeleteIcon />

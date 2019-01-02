@@ -2,11 +2,13 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import * as cx from 'classnames';
 
+import { Handle } from 'src/App/Workingbench/Grid/Element/Handle';
+
 import { IElement } from 'src/store/elementModel';
+import { IGridModel } from 'src/store/gridModel';
 import { IUiStore } from 'src/store/uiStore';
 
 import CSS from './Element.module.scss';
-import { IGridModel } from 'src/store/gridModel';
 
 @inject('uiStore')
 @observer
@@ -71,7 +73,16 @@ export class Element extends React.Component<{ element: IElement; grid: IGridMod
         onClick={() => uiStore!.setSelectedElement(element)}
         onKeyDown={this.bindKeyDown()}
         tabIndex={0}
-      />
+      >
+        {isSelected && (
+          <>
+            <Handle movementType="moveTop" />
+            <Handle movementType="moveRight" />
+            <Handle movementType="moveBottom" />
+            <Handle movementType="moveLeft" />
+          </>
+        )}
+      </div>
     );
   }
 }
