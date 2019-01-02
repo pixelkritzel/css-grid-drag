@@ -5,15 +5,15 @@ import { Provider } from 'mobx-react';
 
 import { App } from './App/index';
 
-import { store } from './store';
-import { uiModel } from './store/uiStore';
+import { dataStore } from './store/dataStore';
+import { storeModel } from './store';
 
-const uiStore = uiModel.create({ shownGrid: store.grids[0] });
+const store = storeModel.create({ data: dataStore, shownMediaQuery: dataStore.grid.mediaQueries[0] });
 
 import './scss/style.scss';
 
 ReactDom.render(
-  <Provider store={store} uiStore={uiStore}>
+  <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root')

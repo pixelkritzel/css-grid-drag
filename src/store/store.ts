@@ -1,47 +1,102 @@
-import { destroy, onSnapshot, types } from 'mobx-state-tree';
+import { types, Instance } from 'mobx-state-tree';
 
-import { defaultGrid, gridModel, IGridData, createGridModelInitialData } from './gridModel';
-import { resourceModel, IResource } from './resourceModel';
+import { ICellModel, cellModel } from './cellModel';
+import { dataStoreModel } from './dataStore';
+import { elementModel, IElement } from './elementModel';
+import { cssGridModel } from './cssGridModel';
+import { placementModel } from './placementModel';
+import { IResource, resourceModel } from './resourceModel';
 
-const defaultInitialData = {
-  grids: [createGridModelInitialData(defaultGrid)],
-  resources: [{ url: 'https://placekitten.com/300/400' }, { url: 'https://placekitten.com/400/300' }]
-};
-
-let initialData: typeof storeModel.CreationType;
-
-const localStorageKey = 'css-grid-drag-store';
-
-const localData = localStorage.getItem(localStorageKey);
-if (localData) {
-  initialData = JSON.parse(localData);
-} else {
-  initialData = defaultInitialData;
-}
-
-const storeModel = types
+export const storeModel = types
   .model('store', {
-    grids: types.array(gridModel),
-    resources: types.array(resourceModel)
+    currentAction: types.maybe(
+      types.enumeration(['ELEMENT_MOVE', 'START_PLACEMENT', 'MOVE_PLACEMENT', 'RESOURCE_DRAG'])
+    ),
+    data: dataStoreModel,
+    draggedOverCell: types.maybe(types.reference(cellModel)),
+    draggedResource: types.maybe(types.reference(resourceModel)),
+    droppedOverCell: types.maybe(types.reference(cellModel)),
+    placement: types.maybe(placementModel),
+    selectedElement: types.maybe(types.reference(elementModel)),
+    shownMediaQuery: types.reference(cssGridModel)
   })
+  .views(self => ({
+    get isCellHighlight() {
+      return self.currentAction && self.currentAction !== 'ELEMENT_MOVE';
+    },
+    get isGuidesFront() {
+      return !!self.currentAction;
+    }
+  }))
   .actions(self => ({
-    addGrid(gridData: IGridData) {
-      self.grids.push(gridModel.create(createGridModelInitialData(gridData)));
+    addElementToGrid() {
+      const { placement, shownMediaQuery } = self;
+      if (!placement) {
+        return;
+      }
+      const { start: dragStart, end: dragEnd, resource } = placement;
+      const { grid } = self.data;
+      const data = {
+        start: {
+          column: shownMediaQuery.columns[dragStart.columnIndex],
+          row: shownMediaQuery.rows[dragStart.rowIndex]
+        },
+        end: {
+          column: shownMediaQuery.columns[dragEnd.columnIndex],
+          row: shownMediaQuery.rows[dragEnd.rowIndex]
+        },
+        resource
+      };
+      const element = elementModel.create(data);
+      grid.addElement(element);
     },
-    addRessource(url: string) {
-      self.resources.push(resourceModel.create({ url }));
+    dragOverCell(cellInstance: ICellModel | undefined) {
+      self.draggedOverCell = cellInstance;
     },
-    deleteResource(resource: IResource) {
-      destroy(resource);
+    dropOverCell(cellInstance: ICellModel) {
+      self.droppedOverCell = cellInstance;
+      if (self.currentAction === 'START_PLACEMENT') {
+        this.startElementPlacement();
+      }
+    },
+    mouseOverCell(cellInstance: ICellModel) {
+      if (self.currentAction === 'MOVE_PLACEMENT' && self.placement) {
+        self.placement.movePlacementEnd(cellInstance);
+      }
+    },
+    mouseUpCell(cellInstance: ICellModel) {
+      if (self.currentAction === 'MOVE_PLACEMENT' && self.placement) {
+        this.addElementToGrid();
+        self.placement = undefined;
+        self.currentAction = undefined;
+      }
+    },
+    setCurrentAction(actionName: typeof self.currentAction) {
+      self.currentAction = actionName;
+    },
+    setDraggedResource(resource: IResource) {
+      self.draggedResource = resource;
+      self.currentAction = 'START_PLACEMENT';
+    },
+    setSelectedElement(element: IElement) {
+      self.selectedElement = element;
+    },
+    startElementPlacement() {
+      const { draggedResource: resource, droppedOverCell } = self;
+      if (droppedOverCell && resource) {
+        const { columnIndex, rowIndex } = droppedOverCell;
+        self.placement = placementModel.create({
+          _start: { columnIndex, rowIndex },
+          end: { columnIndex: columnIndex + 1, rowIndex: rowIndex + 1 },
+          resource
+        });
+        self.draggedResource = undefined;
+        self.currentAction = 'MOVE_PLACEMENT';
+      }
+    },
+    unsetSelectedElement() {
+      self.selectedElement = undefined;
     }
   }));
 
-function createStore(data: {} = initialData) {
-  return storeModel.create(data);
-}
-
-export type IStore = typeof storeModel.Type;
-
-export const store = createStore();
-
-onSnapshot(store, snapShot => localStorage.setItem(localStorageKey, JSON.stringify(snapShot, undefined, 2)));
+export type IStore = Instance<typeof storeModel>;

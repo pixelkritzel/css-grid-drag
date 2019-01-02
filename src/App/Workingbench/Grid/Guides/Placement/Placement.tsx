@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { observer, inject } from 'mobx-react';
 
-import { IGridModel } from 'src/store/gridModel';
-
 import css from './Placement.module.scss';
-import { IUiStore } from 'src/store/uiStore';
+import { IStore } from 'src/store/store';
 
-@inject('uiStore')
+@inject('store')
 @observer
-export class Placement extends React.Component<{ gridStore: IGridModel; uiStore?: IUiStore }, {}> {
+export class Placement extends React.Component<{ store?: IStore }, {}> {
   render() {
-    const { uiStore } = this.props;
-    if (uiStore!.placement) {
-      const { start, end, resource } = uiStore!.placement!;
+    const { store } = this.props;
+    if (store!.placement) {
+      const { start, end, resource } = store!.placement!;
       const style = {
         // CSS grids numbering is based on one and this are array indexes based on zero, hence the +1
         gridColumnStart: start.columnIndex + 1,

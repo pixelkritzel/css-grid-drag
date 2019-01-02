@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 import { Cell } from './Cell';
 import { Placement } from './Placement';
 
-import { IGridModel } from 'src/store/gridModel';
+import { IStore } from 'src/store/store';
 
+@inject('store')
 @observer
-export class Guides extends React.Component<{ gridStore: IGridModel; columns: string[]; rows: string[] }, {}> {
+export class Guides extends React.Component<{ store?: IStore }> {
   render() {
-    const { gridStore } = this.props;
+    const { shownMediaQuery } = this.props.store!;
     return (
       <>
-        <Placement gridStore={gridStore} />
-        {gridStore.cells.map(cellInstance => (
-          <Cell key={cellInstance.id} cellInstance={cellInstance} gridStore={gridStore} />
+        <Placement />
+        {shownMediaQuery.cells.map(cellInstance => (
+          <Cell key={cellInstance.id} cellInstance={cellInstance} />
         ))}
       </>
     );

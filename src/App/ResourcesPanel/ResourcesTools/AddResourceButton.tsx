@@ -24,7 +24,7 @@ export class AddResourceButton extends React.Component<{ store?: IStore }> {
       this.textareaRef!.value.split('\n').forEach(async line => {
         const isUrlAvailable = await urlExists(line);
         if (isUrlAvailable) {
-          this.props.store!.addRessource(line);
+          this.props.store!.data.addRessource(line);
         }
       });
     }

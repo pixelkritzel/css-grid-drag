@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 
+import { ElementsList } from './ElementsList';
 import { GridForm } from './GridForm';
 
 import { IStore } from 'src/store';
@@ -11,12 +12,11 @@ import CSS from './StylesPanel.module.scss';
 @observer
 export class StylesPanel extends React.Component<{ store?: IStore }, {}> {
   render() {
-    const { store } = this.props;
+    const { data: dataStore } = this.props.store!;
     return (
       <div className={CSS.stylesPanel}>
-        {store!.grids.map((grid, index) => (
-          <GridForm key={`grid-styles-${index}`} gridStore={grid} />
-        ))}
+        <GridForm mediaQuery={dataStore!.grid.mediaQueries[0]} />
+        <ElementsList />
       </div>
     );
   }

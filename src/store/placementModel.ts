@@ -1,8 +1,6 @@
 import { types } from 'mobx-state-tree';
 
 import { ICellModel } from './cellModel';
-import { elementModel } from './elementModel';
-import { gridModel } from './gridModel';
 import { resourceModel } from './resourceModel';
 
 export const placementModel = types
@@ -15,8 +13,7 @@ export const placementModel = types
       columnIndex: types.number,
       rowIndex: types.number
     }),
-    resource: types.reference(resourceModel),
-    grid: types.reference(gridModel)
+    resource: types.reference(resourceModel)
   })
   .views(self => ({
     get start() {
@@ -31,22 +28,6 @@ export const placementModel = types
     }
   }))
   .actions(self => ({
-    addElementToGrid() {
-      const { start: dragStart, end: dragEnd, grid, resource } = self;
-      const data = {
-        start: {
-          column: grid.columns[dragStart.columnIndex],
-          row: grid.rows[dragStart.rowIndex]
-        },
-        end: {
-          column: grid.columns[dragEnd.columnIndex],
-          row: grid.rows[dragEnd.rowIndex]
-        },
-        resource
-      };
-      const element = elementModel.create(data);
-      grid.addElement(element);
-    },
     movePlacementEnd(cell: ICellModel) {
       const { start, end } = self;
       if (cell.columnIndex < start.columnIndex) {

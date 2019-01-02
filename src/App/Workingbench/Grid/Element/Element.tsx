@@ -6,18 +6,18 @@ import { Handle } from 'src/App/Workingbench/Grid/Element/Handle';
 
 import { IElement } from 'src/store/elementModel';
 import { IGridModel } from 'src/store/gridModel';
-import { IUiStore } from 'src/store/uiStore';
+import { IStore } from 'src/store/store';
 
 import CSS from './Element.module.scss';
 
-@inject('uiStore')
+@inject('store')
 @observer
-export class Element extends React.Component<{ element: IElement; grid: IGridModel; uiStore?: IUiStore }, {}> {
+export class Element extends React.Component<{ element: IElement; grid: IGridModel; store?: IStore }, {}> {
   isGlobalOnClickBound = false;
 
   bindKeyDown = () => {
-    const { element, uiStore } = this.props;
-    if (uiStore!.selectedElement === element) {
+    const { element, store } = this.props;
+    if (store!.selectedElement === element) {
       return this.onKeyDown;
     }
     return undefined;
@@ -26,23 +26,23 @@ export class Element extends React.Component<{ element: IElement; grid: IGridMod
   onClick = (event: PointerEvent) => {
     const target = event.target as HTMLDivElement;
     if (!target.matches('.element')) {
-      this.props.uiStore!.unsetSelectedElement();
+      this.props.store!.unsetSelectedElement();
     }
   };
 
   onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
-      this.props.uiStore!.unsetSelectedElement();
+      this.props.store!.unsetSelectedElement();
     }
   };
 
   componentDidUpdate() {
-    const { element, uiStore } = this.props;
-    if (uiStore!.selectedElement === element && !this.isGlobalOnClickBound) {
+    const { element, store } = this.props;
+    if (store!.selectedElement === element && !this.isGlobalOnClickBound) {
       document.addEventListener('click', this.onClick);
       this.isGlobalOnClickBound = true;
     }
-    if (uiStore!.selectedElement !== element && this.isGlobalOnClickBound) {
+    if (store!.selectedElement !== element && this.isGlobalOnClickBound) {
       document.removeEventListener('click', this.onClick);
       this.isGlobalOnClickBound = false;
     }
@@ -54,9 +54,9 @@ export class Element extends React.Component<{ element: IElement; grid: IGridMod
   }
 
   render() {
-    const { element, uiStore } = this.props;
+    const { element, store } = this.props;
     const { start, end, resource } = element;
-    const isSelected = uiStore!.selectedElement === element;
+    const isSelected = store!.selectedElement === element;
     const style = {
       gridColumnStart: start.column,
       gridColumnEnd: end.column,
@@ -70,7 +70,7 @@ export class Element extends React.Component<{ element: IElement; grid: IGridMod
       <div
         className={cx('element', CSS.element, { [CSS.selected]: isSelected })}
         style={style}
-        onClick={() => uiStore!.setSelectedElement(element)}
+        onClick={() => store!.setSelectedElement(element)}
         onKeyDown={this.bindKeyDown()}
         tabIndex={0}
       >

@@ -14,7 +14,7 @@ export class ResourcesList extends React.Component<{ store?: IStore }> {
     const { store } = this.props;
     return (
       <div className={css.resourcesList}>
-        {store!.resources.map(resource => (
+        {store!.data.resources.map(resource => (
           <ResourceItem key={`resources-list-item-${resource.id}`} resource={resource} />
         ))}
       </div>

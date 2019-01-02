@@ -4,18 +4,16 @@ import { observable } from 'mobx';
 import * as cx from 'classnames';
 
 import { ICellModel } from 'src/store/cellModel';
-import { IGridModel } from 'src/store/gridModel';
-import { IUiStore } from 'src/store/uiStore';
+import { IStore } from 'src/store/store';
 
 import CSS from './Cell.module.scss';
 
 type ICellProps = {
-  gridStore: IGridModel;
   cellInstance: ICellModel;
-  uiStore?: IUiStore;
+  store?: IStore;
 };
 
-@inject('uiStore')
+@inject('store')
 @observer
 export class Cell extends React.Component<ICellProps, {}> {
   @observable
@@ -23,41 +21,41 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   onDragEnter = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
-    const { cellInstance, uiStore } = this.props;
+    const { cellInstance, store } = this.props;
     this.isDragOver = true;
-    setTimeout(() => uiStore!.dragOverCell(cellInstance));
+    setTimeout(() => store!.dragOverCell(cellInstance));
   };
 
   onDragLeave = () => {
-    const { uiStore } = this.props;
+    const { store } = this.props;
     this.isDragOver = false;
-    uiStore!.dragOverCell(undefined);
+    store!.dragOverCell(undefined);
   };
 
   onDrop = () => {
-    const { cellInstance, uiStore } = this.props;
-    uiStore!.dropOverCell(cellInstance);
+    const { cellInstance, store } = this.props;
+    store!.dropOverCell(cellInstance);
     this.isDragOver = false;
   };
 
   onMouseEnter = () => {
-    const { cellInstance, uiStore } = this.props;
-    uiStore!.mouseOverCell(cellInstance);
+    const { cellInstance, store } = this.props;
+    store!.mouseOverCell(cellInstance);
   };
 
   onMouseUp = () => {
-    const { cellInstance, uiStore } = this.props;
-    uiStore!.mouseUpCell(cellInstance);
+    const { cellInstance, store } = this.props;
+    store!.mouseUpCell(cellInstance);
   };
 
   render() {
-    const { cellInstance, gridStore, uiStore } = this.props;
-    const { isCellHighlight, isGuidesFront } = uiStore!;
+    const { cellInstance, store } = this.props;
+    const { isCellHighlight, isGuidesFront, shownMediaQuery } = store!;
     const { columnName, rowName } = cellInstance;
     const style = {
       gridColumn: `${columnName} / span 1`,
       gridRow: `${rowName} / span 1`,
-      paddingBottom: (gridStore.cellHeight / gridStore.cellWidth) * 100 + '%'
+      paddingBottom: (shownMediaQuery.cellHeight / shownMediaQuery.cellWidth) * 100 + '%'
     };
     return (
       <div

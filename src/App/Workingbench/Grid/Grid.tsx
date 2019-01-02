@@ -1,29 +1,32 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 import { Element } from './Element';
 import { Guides } from './Guides';
 
-import { IGridModel } from 'src/store/gridModel';
+import { IStore } from 'src/store';
 
 function generateGridDefintionFromNames(names: string[]) {
   return names.reduce((prev, name, index) => `${prev} [${name}] ${index < names.length - 1 ? ' 1fr' : ''}`, '');
 }
 
+@inject('store')
 @observer
-export class Grid extends React.Component<{ grid: IGridModel }, {}> {
+export class Grid extends React.Component<{ store?: IStore }, {}> {
   render() {
-    const { grid } = this.props;
+    const { store } = this.props;
+    const { shownMediaQuery } = store!;
+    const { grid } = store!.data;
     const gridStyles = {
       display: 'grid',
-      gridTemplateRows: generateGridDefintionFromNames(grid.rows),
-      gridTemplateColumns: generateGridDefintionFromNames(grid.columns),
-      gridGap: grid.gridGap
+      gridTemplateRows: generateGridDefintionFromNames(shownMediaQuery.rows),
+      gridTemplateColumns: generateGridDefintionFromNames(shownMediaQuery.columns),
+      gridGap: shownMediaQuery.gridGap
     };
 
     return (
       <div style={gridStyles}>
-        <Guides gridStore={grid} columns={grid.columns} rows={grid.rows} />
+        <Guides />
         {grid.elements.map(element => (
           <Element key={`element-${element.id}`} element={element} grid={grid} />
         ))}

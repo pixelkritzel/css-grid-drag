@@ -5,32 +5,32 @@ import { throttle } from 'lodash';
 
 import CSS from './Handle.module.scss';
 
-import { IUiStore } from 'src/store/uiStore';
+import { IStore } from 'src/store/store';
 
 type IHandleProps = {
-  uiStore?: IUiStore;
+  store?: IStore;
   movementType: 'moveTop' | 'moveRight' | 'moveBottom' | 'moveLeft';
 };
 
-@inject('uiStore')
+@inject('store')
 @observer
 export class Handle extends React.Component<IHandleProps> {
   moveTop = () => {
-    const { uiStore } = this.props;
-    const { draggedOverCell, selectedElement } = uiStore!;
-    uiStore!.setCurrentAction('ELEMENT_MOVE');
+    const { store } = this.props;
+    const { draggedOverCell, selectedElement } = store!;
+    store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
       selectedElement!.moveTop(draggedOverCell);
     }
   };
 
   moveRight = () => {
-    const { uiStore } = this.props;
-    const { draggedOverCell, selectedElement, shownGrid } = uiStore!;
-    uiStore!.setCurrentAction('ELEMENT_MOVE');
+    const { store } = this.props;
+    const { draggedOverCell, selectedElement, shownMediaQuery } = store!;
+    store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
-      const cellRight = shownGrid.cells.find(
-        cell => cell.columnName === shownGrid.columns[draggedOverCell.columnIndex + 1]
+      const cellRight = shownMediaQuery.cells.find(
+        cell => cell.columnName === shownMediaQuery.columns[draggedOverCell.columnIndex + 1]
       );
       if (cellRight) {
         selectedElement!.moveRight(cellRight);
@@ -39,11 +39,13 @@ export class Handle extends React.Component<IHandleProps> {
   };
 
   moveBottom = () => {
-    const { uiStore } = this.props;
-    const { draggedOverCell, selectedElement, shownGrid } = uiStore!;
-    uiStore!.setCurrentAction('ELEMENT_MOVE');
+    const { store } = this.props;
+    const { draggedOverCell, selectedElement, shownMediaQuery } = store!;
+    store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
-      const cellBelow = shownGrid.cells.find(cell => cell.rowName === shownGrid.rows[draggedOverCell.rowIndex + 1]);
+      const cellBelow = shownMediaQuery.cells.find(
+        cell => cell.rowName === shownMediaQuery.rows[draggedOverCell.rowIndex + 1]
+      );
       if (cellBelow) {
         selectedElement!.moveBottom(cellBelow);
       }
@@ -51,17 +53,17 @@ export class Handle extends React.Component<IHandleProps> {
   };
 
   moveLeft = () => {
-    const { uiStore } = this.props;
-    const { draggedOverCell, selectedElement } = uiStore!;
-    uiStore!.setCurrentAction('ELEMENT_MOVE');
+    const { store } = this.props;
+    const { draggedOverCell, selectedElement } = store!;
+    store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
       selectedElement!.moveLeft(draggedOverCell);
     }
   };
 
   resetCurrentAction = () => {
-    const { uiStore } = this.props;
-    uiStore!.setCurrentAction(undefined);
+    const { store } = this.props;
+    store!.setCurrentAction(undefined);
   };
 
   render() {
