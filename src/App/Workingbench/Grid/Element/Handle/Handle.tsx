@@ -26,7 +26,7 @@ export class Handle extends React.Component<IHandleProps> {
 
   moveRight = () => {
     const { store } = this.props;
-    const { draggedOverCell, selectedElement, shownMediaQuery } = store!;
+    const { draggedOverCell, selectedElement, shownGrid: shownMediaQuery } = store!;
     store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
       const cellRight = shownMediaQuery.cells.find(
@@ -40,7 +40,7 @@ export class Handle extends React.Component<IHandleProps> {
 
   moveBottom = () => {
     const { store } = this.props;
-    const { draggedOverCell, selectedElement, shownMediaQuery } = store!;
+    const { draggedOverCell, selectedElement, shownGrid: shownMediaQuery } = store!;
     store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
       const cellBelow = shownMediaQuery.cells.find(

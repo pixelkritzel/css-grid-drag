@@ -50,7 +50,7 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   render() {
     const { cellInstance, store } = this.props;
-    const { isCellHighlight, isGuidesFront, shownMediaQuery } = store!;
+    const { isCellHighlight, isGuidesFront, shownGrid: shownMediaQuery } = store!;
     const { columnName, rowName } = cellInstance;
     const style = {
       gridColumn: `${columnName} / span 1`,

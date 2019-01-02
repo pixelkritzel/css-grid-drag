@@ -10,11 +10,11 @@ import { IStore } from 'src/store/store';
 export class ElementsList extends React.Component<{ store?: IStore }> {
   render() {
     const { store } = this.props;
-    const { grid } = store!.data;
+    const { shownGrid } = store!;
     return (
       <>
         <h4>Elements</h4>
-        {grid.elements.map((element, index) => (
+        {shownGrid.elements.map((element, index) => (
           <ElementForm
             key={`element-form-${element.id}`}
             element={element}

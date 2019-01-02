@@ -5,14 +5,13 @@ import * as cx from 'classnames';
 import { Handle } from 'src/App/Workingbench/Grid/Element/Handle';
 
 import { IElement } from 'src/store/elementModel';
-import { IGridModel } from 'src/store/gridModel';
 import { IStore } from 'src/store/store';
 
 import CSS from './Element.module.scss';
 
 @inject('store')
 @observer
-export class Element extends React.Component<{ element: IElement; grid: IGridModel; store?: IStore }, {}> {
+export class Element extends React.Component<{ element: IElement; store?: IStore }, {}> {
   isGlobalOnClickBound = false;
 
   bindKeyDown = () => {

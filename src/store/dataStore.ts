@@ -1,11 +1,11 @@
 import { destroy, Instance, onSnapshot, types } from 'mobx-state-tree';
 
 import { defaultGrid, gridModel } from './gridModel';
-import { createCssGridModelInitialData } from './cssGridModel';
+import { createGridModelInitialData } from './gridModel';
 import { resourceModel, IResource } from './resourceModel';
 
 const defaultInitialData = {
-  grid: { mediaQueries: [createCssGridModelInitialData(defaultGrid)] },
+  grids: [createGridModelInitialData(defaultGrid)],
   resources: [{ url: 'https://placekitten.com/300/400' }, { url: 'https://placekitten.com/400/300' }]
 };
 
@@ -22,7 +22,7 @@ if (localData) {
 
 export const dataStoreModel = types
   .model('dataStore', {
-    grid: gridModel,
+    grids: types.array(gridModel),
     resources: types.array(resourceModel)
   })
   .actions(self => ({

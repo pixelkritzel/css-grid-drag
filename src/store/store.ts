@@ -3,7 +3,7 @@ import { types, Instance } from 'mobx-state-tree';
 import { ICellModel, cellModel } from './cellModel';
 import { dataStoreModel } from './dataStore';
 import { elementModel, IElement } from './elementModel';
-import { cssGridModel } from './cssGridModel';
+import { gridModel } from './gridModel';
 import { placementModel } from './placementModel';
 import { IResource, resourceModel } from './resourceModel';
 
@@ -18,7 +18,7 @@ export const storeModel = types
     droppedOverCell: types.maybe(types.reference(cellModel)),
     placement: types.maybe(placementModel),
     selectedElement: types.maybe(types.reference(elementModel)),
-    shownMediaQuery: types.reference(cssGridModel)
+    shownGrid: types.reference(gridModel)
   })
   .views(self => ({
     get isCellHighlight() {
@@ -30,25 +30,24 @@ export const storeModel = types
   }))
   .actions(self => ({
     addElementToGrid() {
-      const { placement, shownMediaQuery } = self;
+      const { placement, shownGrid } = self;
       if (!placement) {
         return;
       }
       const { start: dragStart, end: dragEnd, resource } = placement;
-      const { grid } = self.data;
       const data = {
         start: {
-          column: shownMediaQuery.columns[dragStart.columnIndex],
-          row: shownMediaQuery.rows[dragStart.rowIndex]
+          column: shownGrid.columns[dragStart.columnIndex],
+          row: shownGrid.rows[dragStart.rowIndex]
         },
         end: {
-          column: shownMediaQuery.columns[dragEnd.columnIndex],
-          row: shownMediaQuery.rows[dragEnd.rowIndex]
+          column: shownGrid.columns[dragEnd.columnIndex],
+          row: shownGrid.rows[dragEnd.rowIndex]
         },
         resource
       };
       const element = elementModel.create(data);
-      grid.addElement(element);
+      shownGrid.addElement(element);
     },
     dragOverCell(cellInstance: ICellModel | undefined) {
       self.draggedOverCell = cellInstance;

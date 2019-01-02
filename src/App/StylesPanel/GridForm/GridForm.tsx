@@ -7,21 +7,20 @@ import { InputField } from 'src/App/Components/InputField';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { ICssGrid } from 'src/store/cssGridModel';
 import { IStore } from 'src/store/store';
 
 import CSS from './GridForm.module.scss';
 
 @inject('store')
 @observer
-export class GridForm extends React.Component<{ mediaQuery: ICssGrid; store?: IStore }> {
+export class GridForm extends React.Component<{ store?: IStore }> {
   onValueChange = (name: string, value: string) => {
-    const { mediaQuery } = this.props;
-    mediaQuery.updateField(name, value);
+    const { shownGrid } = this.props.store!;
+    shownGrid.updateField(name, value);
   };
 
   render() {
-    const { mediaQuery } = this.props;
+    const { shownGrid } = this.props.store!;
     return (
       <>
         <form>
@@ -30,19 +29,19 @@ export class GridForm extends React.Component<{ mediaQuery: ICssGrid; store?: IS
             Columns:
             <div className={CSS.changeGridColumns}>
               <div>
-                <Button icon onClick={() => mediaQuery.changeGridItems('columns', 'decrement', 'start')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'decrement', 'start')}>
                   <RemoveIcon />
                 </Button>
-                <Button icon onClick={() => mediaQuery.changeGridItems('columns', 'increment', 'start')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'increment', 'start')}>
                   <AddIcon />
                 </Button>
               </div>
-              {mediaQuery.columns.length - 1}
+              {shownGrid.columns.length - 1}
               <div>
-                <Button icon onClick={() => mediaQuery.changeGridItems('columns', 'decrement', 'end')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'decrement', 'end')}>
                   <RemoveIcon />
                 </Button>
-                <Button icon onClick={() => mediaQuery.changeGridItems('columns', 'increment', 'end')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'increment', 'end')}>
                   <AddIcon />
                 </Button>
               </div>
@@ -52,19 +51,19 @@ export class GridForm extends React.Component<{ mediaQuery: ICssGrid; store?: IS
             Rows:
             <div className={CSS.changeGridRows}>
               <div>
-                <Button icon onClick={() => mediaQuery.changeGridItems('rows', 'decrement', 'start')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'decrement', 'start')}>
                   <RemoveIcon />
                 </Button>
-                <Button icon onClick={() => mediaQuery.changeGridItems('rows', 'increment', 'start')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'increment', 'start')}>
                   <AddIcon />
                 </Button>
               </div>
-              {mediaQuery.rows.length - 1}
+              {shownGrid.rows.length - 1}
               <div>
-                <Button icon onClick={() => mediaQuery.changeGridItems('rows', 'decrement', 'end')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'decrement', 'end')}>
                   <RemoveIcon />
                 </Button>
-                <Button icon onClick={() => mediaQuery.changeGridItems('rows', 'increment', 'end')}>
+                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'increment', 'end')}>
                   <AddIcon />
                 </Button>
               </div>
@@ -74,7 +73,7 @@ export class GridForm extends React.Component<{ mediaQuery: ICssGrid; store?: IS
             inline
             label="Grid Gap"
             name="gridGap"
-            value={mediaQuery.gridGap}
+            value={shownGrid.gridGap}
             onValueChange={this.onValueChange}
           />
           <InputField
@@ -82,7 +81,7 @@ export class GridForm extends React.Component<{ mediaQuery: ICssGrid; store?: IS
             label="Cell Width"
             name="cellWidth"
             type="number"
-            value={mediaQuery.cellWidth.toString()}
+            value={shownGrid.cellWidth.toString()}
             onValueChange={this.onValueChange}
           />
           <InputField
@@ -90,7 +89,7 @@ export class GridForm extends React.Component<{ mediaQuery: ICssGrid; store?: IS
             label="Cell Height"
             name="cellHeight"
             type="number"
-            value={mediaQuery.cellHeight.toString()}
+            value={shownGrid.cellHeight.toString()}
             onValueChange={this.onValueChange}
           />
         </form>

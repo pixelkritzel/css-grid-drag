@@ -10,7 +10,7 @@ import { IStore } from 'src/store/store';
 @observer
 export class Guides extends React.Component<{ store?: IStore }> {
   render() {
-    const { shownMediaQuery } = this.props.store!;
+    const { shownGrid: shownMediaQuery } = this.props.store!;
     return (
       <>
         <Placement />

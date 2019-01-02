@@ -8,7 +8,7 @@ import { App } from './App/index';
 import { dataStore } from './store/dataStore';
 import { storeModel } from './store';
 
-const store = storeModel.create({ data: dataStore, shownMediaQuery: dataStore.grid.mediaQueries[0] });
+const store = storeModel.create({ data: dataStore, shownGrid: dataStore.grids[0] });
 
 import './scss/style.scss';
 

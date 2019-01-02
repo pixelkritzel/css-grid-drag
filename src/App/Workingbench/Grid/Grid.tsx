@@ -15,20 +15,19 @@ function generateGridDefintionFromNames(names: string[]) {
 export class Grid extends React.Component<{ store?: IStore }, {}> {
   render() {
     const { store } = this.props;
-    const { shownMediaQuery } = store!;
-    const { grid } = store!.data;
+    const { shownGrid } = store!;
     const gridStyles = {
       display: 'grid',
-      gridTemplateRows: generateGridDefintionFromNames(shownMediaQuery.rows),
-      gridTemplateColumns: generateGridDefintionFromNames(shownMediaQuery.columns),
-      gridGap: shownMediaQuery.gridGap
+      gridTemplateRows: generateGridDefintionFromNames(shownGrid.rows),
+      gridTemplateColumns: generateGridDefintionFromNames(shownGrid.columns),
+      gridGap: shownGrid.gridGap
     };
 
     return (
       <div style={gridStyles}>
         <Guides />
-        {grid.elements.map(element => (
-          <Element key={`element-${element.id}`} element={element} grid={grid} />
+        {shownGrid.elements.map(element => (
+          <Element key={`element-${element.id}`} element={element} />
         ))}
       </div>
     );
