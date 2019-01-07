@@ -15,7 +15,8 @@ $resourcespanel-height: 200px;
   position: absolute;
   width: 100%;
   height: $menu-height;
-  background-color: orchid;
+  border-bottom: 1px solid $border-color;
+  box-shadow: 0px 0px 2px $border-color;
 }
 
 .workingbench {
@@ -24,6 +25,7 @@ $resourcespanel-height: 200px;
   left: 0;
   width: calc(100% - #{$stylespanel-width});
   height: calc(100% - #{$menu-height} - #{$resourcespanel-height});
+  padding: 16px;
   overflow: scroll;
 }
 
@@ -33,6 +35,7 @@ $resourcespanel-height: 200px;
   right: 0;
   width: $stylespanel-width;
   height: calc(100% - #{$menu-height} - #{$resourcespanel-height});
+  border-left: 1px solid $border-color;
 }
 
 .resourcesPanel {
@@ -41,6 +44,6 @@ $resourcespanel-height: 200px;
   bottom: 0;
   width: 100%;
   height: $resourcespanel-height;
-  border: 1px solid $border-color;
+  border-top: 1px solid $border-color;
   box-shadow: 0px 0px 2px $border-color;
 }

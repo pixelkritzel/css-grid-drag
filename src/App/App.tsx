@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { MenuPanel } from 'src/App/MenuPanel';
 import { ResourcesPanel } from 'src/App/ResourcesPanel';
 import { StylesPanel } from 'src/App/StylesPanel';
 import { Workingbench } from 'src/App/Workingbench';
@@ -10,7 +11,9 @@ export class App extends React.Component {
   render() {
     return (
       <div className={css.app}>
-        <div className={css.menu}>Menu</div>
+        <div className={css.menu}>
+          <MenuPanel />
+        </div>
         <div className={css.workingbench}>
           <Workingbench />
         </div>
