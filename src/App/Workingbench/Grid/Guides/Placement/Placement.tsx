@@ -10,13 +10,13 @@ export class Placement extends React.Component<{ store?: IStore }, {}> {
   render() {
     const { store } = this.props;
     if (store!.placement) {
-      const { start, end, resource } = store!.placement!;
+      const { start, width, height, resource } = store!.placement!;
       const style = {
         // CSS grids numbering is based on one and this are array indexes based on zero, hence the +1
         gridColumnStart: start.columnIndex + 1,
-        gridColumnEnd: end.columnIndex + 1,
+        gridColumnEnd: `span ${width}`,
         gridRowStart: start.rowIndex + 1,
-        gridRowEnd: end.rowIndex + 1,
+        gridRowEnd: `span ${height}`,
         backgroundImage: `url(${resource.url})`
       };
 

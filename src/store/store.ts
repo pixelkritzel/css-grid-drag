@@ -34,16 +34,15 @@ export const storeModel = types
       if (!placement) {
         return;
       }
-      const { start: dragStart, end: dragEnd, resource } = placement;
+      const { start, width, height, resource } = placement;
+      const { columnName, rowName } = start;
       const data = {
         start: {
-          column: shownGrid.columns[dragStart.columnIndex],
-          row: shownGrid.rows[dragStart.rowIndex]
+          columnName,
+          rowName
         },
-        end: {
-          column: shownGrid.columns[dragEnd.columnIndex],
-          row: shownGrid.rows[dragEnd.rowIndex]
-        },
+        width,
+        height,
         resource
       };
       const element = elementModel.create(data);
@@ -83,10 +82,10 @@ export const storeModel = types
     startElementPlacement() {
       const { draggedResource: resource, droppedOverCell } = self;
       if (droppedOverCell && resource) {
-        const { columnIndex, rowIndex } = droppedOverCell;
         self.placement = placementModel.create({
-          _start: { columnIndex, rowIndex },
-          end: { columnIndex: columnIndex + 1, rowIndex: rowIndex + 1 },
+          start: droppedOverCell,
+          width: 1,
+          height: 1,
           resource
         });
         self.draggedResource = undefined;

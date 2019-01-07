@@ -1,44 +1,25 @@
 import { types } from 'mobx-state-tree';
 
-import { ICellModel } from './cellModel';
+import { cellModel, ICellModel } from './cellModel';
 import { resourceModel } from './resourceModel';
 
 export const placementModel = types
   .model('placementModel', {
-    _start: types.model({
-      columnIndex: types.number,
-      rowIndex: types.number
-    }),
-    end: types.model({
-      columnIndex: types.number,
-      rowIndex: types.number
-    }),
+    start: types.reference(cellModel),
+    width: types.number,
+    height: types.number,
     resource: types.reference(resourceModel)
   })
-  .views(self => ({
-    get start() {
-      const start = { ...self._start };
-      if (self.end.columnIndex < self._start.columnIndex) {
-        start.columnIndex++;
-      }
-      if (self.end.rowIndex < self._start.rowIndex) {
-        start.rowIndex++;
-      }
-      return start;
-    }
-  }))
   .actions(self => ({
     movePlacementEnd(cell: ICellModel) {
-      const { start, end } = self;
-      if (cell.columnIndex < start.columnIndex) {
-        end.columnIndex = cell.columnIndex;
-      } else {
-        end.columnIndex = cell.columnIndex + 1;
+      const { start } = self;
+      const width = cell.columnIndex - start.columnIndex + 1;
+      const height = cell.rowIndex - start.rowIndex + 1;
+      if (width > 0) {
+        self.width = width;
       }
-      if (cell.rowIndex < start.rowIndex) {
-        end.rowIndex = cell.rowIndex;
-      } else {
-        end.rowIndex = cell.rowIndex + 1;
+      if (height > 0) {
+        self.height = height;
       }
     }
   }));

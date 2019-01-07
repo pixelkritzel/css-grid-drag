@@ -64,6 +64,7 @@ export class Cell extends React.Component<ICellProps, {}> {
           [CSS.isGuidesFront]: isGuidesFront
         })}
         style={style}
+        data-css-grid-drag-cell
         onDragOver={e => e.preventDefault()}
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}

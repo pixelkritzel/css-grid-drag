@@ -54,34 +54,28 @@ export class Element extends React.Component<{ element: IElement; store?: IStore
 
   render() {
     const { element, store } = this.props;
-    const { start, end, resource } = element;
+    const { id } = element;
     const isSelected = store!.selectedElement === element;
-    const style = {
-      gridColumnStart: start.column,
-      gridColumnEnd: end.column,
-      gridRowStart: start.row,
-      gridRowEnd: end.row,
-      backgroundImage: `url(${resource.url})`,
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat'
-    };
     return (
-      <div
-        className={cx('element', CSS.element, { [CSS.selected]: isSelected })}
-        style={style}
-        onClick={() => store!.setSelectedElement(element)}
-        onKeyDown={this.bindKeyDown()}
-        tabIndex={0}
-      >
-        {isSelected && (
-          <>
-            <Handle movementType="moveTop" />
-            <Handle movementType="moveRight" />
-            <Handle movementType="moveBottom" />
-            <Handle movementType="moveLeft" />
-          </>
-        )}
-      </div>
+      <>
+        <div
+          className={cx('element', CSS.element, { [CSS.selected]: isSelected })}
+          id={`element-${id}`}
+          onClick={() => store!.setSelectedElement(element)}
+          onKeyDown={this.bindKeyDown()}
+          tabIndex={0}
+          data-css-grid-drag-element
+        >
+          {isSelected && (
+            <>
+              <Handle movementType="moveTop" />
+              <Handle movementType="moveRight" />
+              <Handle movementType="moveBottom" />
+              <Handle movementType="moveLeft" />
+            </>
+          )}
+        </div>
+      </>
     );
   }
 }

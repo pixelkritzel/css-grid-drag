@@ -26,27 +26,19 @@ export class Handle extends React.Component<IHandleProps> {
 
   moveRight = () => {
     const { store } = this.props;
-    const { draggedOverCell, selectedElement, shownGrid } = store!;
+    const { draggedOverCell, selectedElement } = store!;
     store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
-      const cellRight = shownGrid.cells.find(
-        cell => cell.columnName === shownGrid.columns[draggedOverCell.columnIndex + 1]
-      );
-      if (cellRight) {
-        selectedElement!.moveRight(cellRight);
-      }
+      selectedElement!.changeWidth(draggedOverCell);
     }
   };
 
   moveBottom = () => {
     const { store } = this.props;
-    const { draggedOverCell, selectedElement, shownGrid } = store!;
+    const { draggedOverCell, selectedElement } = store!;
     store!.setCurrentAction('ELEMENT_MOVE');
     if (draggedOverCell) {
-      const cellBelow = shownGrid.cells.find(cell => cell.rowName === shownGrid.rows[draggedOverCell.rowIndex + 1]);
-      if (cellBelow) {
-        selectedElement!.moveBottom(cellBelow);
-      }
+      selectedElement!.changeHeight(draggedOverCell);
     }
   };
 
