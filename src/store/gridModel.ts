@@ -5,11 +5,11 @@ import { elementModel, IElement } from './elementModel';
 import { cellModel } from './cellModel';
 
 export const defaultGrid = {
-  mediaQuery: '',
   noOfColumns: 12,
   noOfRows: 12,
   cellWidth: 1,
   cellHeigt: 1,
+  startWidth: 768,
   gridGap: '6px'
 };
 
@@ -28,6 +28,7 @@ export function createGridModelInitialData({ noOfColumns, noOfRows, ...theRest }
 export const gridModel = types
   .model('grid', {
     id: types.optional(types.identifier, uuid()),
+    startWidth: types.number,
     columns: types.array(types.string),
     rows: types.array(types.string),
     gridGap: '',

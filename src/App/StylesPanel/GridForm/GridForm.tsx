@@ -92,6 +92,13 @@ export class GridForm extends React.Component<{ store?: IStore }> {
             value={shownGrid.cellHeight.toString()}
             onValueChange={this.onValueChange}
           />
+          <InputField
+            label="Use grid from width"
+            name="startWidth"
+            type="number"
+            value={shownGrid.startWidth.toString()}
+            onValueChange={this.onValueChange}
+          />
         </form>
       </>
     );
