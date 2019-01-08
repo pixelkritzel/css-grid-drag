@@ -28,7 +28,7 @@ export class ElementForm extends React.Component<IElementFormProps> {
     const { shownGrid } = store!;
     return (
       <div className={CSS.elementForm}>
-        <Button style="text" onClick={() => store!.setSelectedElement(element)}>
+        <Button variant="text" onClick={() => store!.setSelectedElement(element)}>
           <strong className={CSS.title}>
             {open ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
             Element {index}
@@ -36,7 +36,7 @@ export class ElementForm extends React.Component<IElementFormProps> {
         </Button>
         <div className={cx(CSS.elementFormBody, { [CSS.closed]: !open })}>
           <img className={CSS.img} src={element.resource.url} />
-          <Button fullWidth style="danger" onClick={() => shownGrid.removeElement(element)}>
+          <Button fullWidth variant="danger" onClick={() => shownGrid.removeElement(element)}>
             <CancelIcon fontSize="inherit" /> Remove
           </Button>
         </div>

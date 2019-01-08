@@ -1,8 +1,11 @@
 @import '~src/scss/variables';
 
+.inputField {
+  margin-bottom: $spacer;
+}
+
 .inline {
   display: flex;
-  margin-bottom: $spacer;
 
   label {
     white-space: nowrap;
@@ -10,6 +13,6 @@
   }
 
   input {
-    min-width: 0;
+    width: 100%;
   }
 }

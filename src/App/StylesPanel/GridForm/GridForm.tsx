@@ -1,11 +1,14 @@
 import * as React from 'react';
+import { observable } from 'mobx';
 import { observer, inject } from 'mobx-react';
 
-import { Button } from 'src/App/Components/Button';
-import { InputField } from 'src/App/Components/InputField';
+import ReactAnimateHeight from 'react-animate-height';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button } from 'src/App/Components/Button';
+import { IncrementDecrement } from 'src/App/Components/IncrementDecrement';
+import { InputField } from 'src/App/Components/InputField';
 
 import { IStore } from 'src/store/store';
 
@@ -14,93 +17,72 @@ import CSS from './GridForm.module.scss';
 @inject('store')
 @observer
 export class GridForm extends React.Component<{ store?: IStore }> {
-  onValueChange = (name: string, value: string) => {
+  @observable isExpanded = true;
+
+  get formHeight() {
+    return this.isExpanded ? 'auto' : 0;
+  }
+
+  toggleGridForm = () => (this.isExpanded = !this.isExpanded);
+
+  onValueChange = (name: string, value: string | number) => {
     const { shownGrid } = this.props.store!;
-    shownGrid.updateField(name, value);
+    const fieldType = typeof shownGrid[name];
+    if (fieldType === 'string') {
+      shownGrid.updateField(name, value.toString());
+    } else if (fieldType === 'number') {
+      shownGrid.updateField(name, Number(value));
+    }
   };
 
   render() {
     const { shownGrid } = this.props.store!;
+    const { formHeight, isExpanded } = this;
     return (
-      <>
-        <form>
-          <h4>Grid styles</h4>
-          <div>
-            Columns:
-            <div className={CSS.changeGridColumns}>
-              <div>
-                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'decrement', 'start')}>
-                  <RemoveIcon />
-                </Button>
-                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'increment', 'start')}>
-                  <AddIcon />
-                </Button>
-              </div>
-              {shownGrid.columns.length - 1}
-              <div>
-                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'decrement', 'end')}>
-                  <RemoveIcon />
-                </Button>
-                <Button icon onClick={() => shownGrid.changeGridItems('columns', 'increment', 'end')}>
-                  <AddIcon />
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div>
-            Rows:
-            <div className={CSS.changeGridRows}>
-              <div>
-                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'decrement', 'start')}>
-                  <RemoveIcon />
-                </Button>
-                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'increment', 'start')}>
-                  <AddIcon />
-                </Button>
-              </div>
-              {shownGrid.rows.length - 1}
-              <div>
-                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'decrement', 'end')}>
-                  <RemoveIcon />
-                </Button>
-                <Button icon onClick={() => shownGrid.changeGridItems('rows', 'increment', 'end')}>
-                  <AddIcon />
-                </Button>
-              </div>
-            </div>
-          </div>
-          <InputField
-            inline
-            label="Grid Gap"
-            name="gridGap"
-            value={shownGrid.gridGap}
-            onValueChange={this.onValueChange}
+      <form>
+        <Button variant="text" onClick={this.toggleGridForm}>
+          <h4 className={CSS.title}>{isExpanded ? <ArrowDropDownIcon /> : <ArrowRightIcon />}Grid styles</h4>
+        </Button>
+        <ReactAnimateHeight height={formHeight} duration={160}>
+          <IncrementDecrement
+            name="columns"
+            label="Columns"
+            initialValue={shownGrid.columns.length - 1}
+            minValue={1}
+            onIncrement={() => shownGrid.changeGridItems('columns', 'increment')}
+            onDecrement={() => shownGrid.changeGridItems('columns', 'decrement')}
           />
-          <InputField
-            inline
-            label="Cell Width"
+          <IncrementDecrement
+            name="rows"
+            label="Rows"
+            initialValue={shownGrid.rows.length - 1}
+            minValue={1}
+            onIncrement={() => shownGrid.changeGridItems('rows', 'increment')}
+            onDecrement={() => shownGrid.changeGridItems('rows', 'decrement')}
+          />
+          <IncrementDecrement
             name="cellWidth"
-            type="number"
-            value={shownGrid.cellWidth.toString()}
+            label="Cell Width"
+            minValue={1}
+            initialValue={shownGrid.cellWidth}
             onValueChange={this.onValueChange}
           />
-          <InputField
-            inline
-            label="Cell Height"
+          <IncrementDecrement
             name="cellHeight"
-            type="number"
-            value={shownGrid.cellHeight.toString()}
+            label="Cell Height"
+            minValue={1}
+            initialValue={shownGrid.cellHeight}
             onValueChange={this.onValueChange}
           />
-          <InputField
-            label="Use grid from width"
+          <InputField label="Grid Gap" name="gridGap" value={shownGrid.gridGap} onValueChange={this.onValueChange} />
+          <IncrementDecrement
+            label="Start Width"
             name="startWidth"
-            type="number"
-            value={shownGrid.startWidth.toString()}
+            initialValue={shownGrid.startWidth}
             onValueChange={this.onValueChange}
           />
-        </form>
-      </>
+        </ReactAnimateHeight>
+      </form>
     );
   }
 }

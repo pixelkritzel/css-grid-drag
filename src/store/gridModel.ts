@@ -73,23 +73,14 @@ export const gridModel = types
       }
       self[name] = value;
     },
-    changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement', position: 'start' | 'end') {
+    changeGridItems(which: 'columns' | 'rows', action: 'increment' | 'decrement') {
       const field = self[which];
       if (action === 'increment') {
         const newElement = `${which}-${uuid()}`;
-        if (position === 'start') {
-          field.unshift(newElement);
-        } else {
-          field.push(newElement);
-        }
+        field.push(newElement);
       }
       if (action === 'decrement') {
-        if (position === 'start') {
-          field.shift();
-        }
-        {
-          field.pop();
-        }
+        field.pop();
       }
     }
   }));

@@ -13,6 +13,7 @@
     "mobx-state-tree": "^3.5.0",
     "now": "^11.4.6",
     "react": "^16.7.0",
+    "react-animate-height": "^2.0.7",
     "react-dom": "^16.7.0",
     "react-scripts-ts": "4.0.8",
     "uuid": "^3.3.2"

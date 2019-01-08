@@ -1,8 +1,8 @@
-.changeGridColumns {
-  display: flex;
-  justify-content: space-between;
-}
+.title {
+  margin-left: -8px;
+  margin-bottom: 0;
 
-.changeGridRows {
-  text-align: center;
+  svg {
+    margin-top: -3px;
+  }
 }

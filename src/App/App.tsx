@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { MenuPanel } from 'src/App/MenuPanel';
-import { ResourcesPanel } from 'src/App/ResourcesPanel';
-import { StylesPanel } from 'src/App/StylesPanel';
-import { Workingbench } from 'src/App/Workingbench';
+import { MenuPanel } from './MenuPanel';
+import { ResourcesPanel } from './ResourcesPanel';
+import { StylesPanel } from './StylesPanel';
+import { Workingbench } from './Workingbench';
 
 import css from './App.module.scss';
 
