@@ -31,12 +31,13 @@ export class InputField extends React.Component<IInputFieldProps, {}> {
   };
 
   render() {
-    const { className, inline, label, name, value, type = 'text', ...otherProps } = this.props;
+    const { children, className, inline, label, name, value, type = 'text', ...otherProps } = this.props;
+    delete otherProps.onValueChange;
     return (
-      <div className={cx(className, { [CSS.inline]: inline })}>
+      <div className={cx(className, CSS.inputField, { [CSS.inline]: inline })}>
         <label htmlFor={this.uuid}>{label}</label>
-
         <input value={value} name={name} id={this.uuid} type={type} onChange={this.onChange} {...otherProps} />
+        {children}
       </div>
     );
   }

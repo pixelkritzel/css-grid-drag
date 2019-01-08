@@ -1,19 +1,26 @@
 @import 'src/scss/variables';
 
 .wrapper {
-  display: flex;
   margin-bottom: $spacer;
 }
 
 .inputField {
   margin-bottom: 0;
+  flex-wrap: wrap;
 
   label {
+    width: 100%;
     margin-right: 0;
   }
 
   input {
-    margin: 0 6px;
     text-align: center;
+    width: 50%;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
 }

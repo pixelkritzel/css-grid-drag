@@ -14,12 +14,12 @@ interface IButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 export class Button extends React.Component<IButtonProps> {
   render() {
-    const { className = '', fullWidth, icon, onClick, variant: style, ...otherProps } = this.props;
+    const { className = '', fullWidth, icon, onClick, variant, ...otherProps } = this.props;
     return (
       <button
         className={cx(
           CSS.button,
-          { [CSS.fullWidth]: fullWidth, [CSS.icon]: icon, [CSS[`style-${style}`]]: style },
+          { [CSS.fullWidth]: fullWidth, [CSS.icon]: icon, [CSS[`variant-${variant}`]]: variant },
           className
         )}
         type="button"

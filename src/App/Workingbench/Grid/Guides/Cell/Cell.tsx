@@ -32,7 +32,8 @@ export class Cell extends React.Component<ICellProps, {}> {
     store!.dragOverCell(undefined);
   };
 
-  onDrop = () => {
+  onDrop = (event: React.DragEvent) => {
+    event.preventDefault();
     const { cellInstance, store } = this.props;
     store!.dropOverCell(cellInstance);
     this.isDragOver = false;

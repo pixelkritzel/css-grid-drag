@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Button } from 'src/App/Components/Button';
 import { InputField } from 'src/App/Components/InputField';
 
-import { ReactComponent as AddIcon } from 'src/icons/Add.svg';
-import { ReactComponent as RemoveIcon } from 'src/icons/Remove.svg';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 import CSS from './IncrementDecrement.module.scss';
 
@@ -34,7 +34,7 @@ export class IncrementDecrement extends React.Component<IIncrementDecrementProps
 
   get isDecrementable() {
     const { minValue } = this.props;
-    return typeof minValue === 'undefined' || this.state.value < minValue;
+    return typeof minValue === 'undefined' || this.state.value > minValue;
   }
 
   increment = () => {
@@ -77,20 +77,14 @@ export class IncrementDecrement extends React.Component<IIncrementDecrementProps
 
     return (
       <div className={CSS.wrapper}>
-        <InputField
-          className={CSS.inputField}
-          inline
-          type="number"
-          label={label}
-          name={name}
-          value={value.toString()}
-        />{' '}
-        <Button icon disabled={!isDecrementable} aria-label="Decrement" onClick={this.decrement}>
-          <RemoveIcon />
-        </Button>
-        <Button icon disabled={!isIncrementable} aria-label="Increment" onClick={this.increment}>
-          <AddIcon />
-        </Button>
+        <InputField className={CSS.inputField} inline type="number" label={label} name={name} value={value.toString()}>
+          <Button icon disabled={!isDecrementable} aria-label="Decrement" onClick={this.decrement}>
+            <RemoveIcon />
+          </Button>
+          <Button icon disabled={!isIncrementable} aria-label="Increment" onClick={this.increment}>
+            <AddIcon />
+          </Button>
+        </InputField>
       </div>
     );
   }
