@@ -85,6 +85,10 @@ $border-color: $gray-300;
     color: inherit;
     -webkit-appearance: none;
 
+    &:hover {
+      color: teal;
+    }
+
     &:active,
     &:focus {
       box-shadow: none;

@@ -51,19 +51,22 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   render() {
     const { cellInstance, store } = this.props;
-    const { isCellHighlight, isGuidesFront, shownGrid } = store!;
+    const { isCellHighlight, isExport, isGuidesFront } = store!;
     const { columnName, rowName } = cellInstance;
     const style = {
       gridColumn: `${columnName} / span 1`,
-      gridRow: `${rowName} / span 1`,
-      paddingBottom: (shownGrid.cellHeight / shownGrid.cellWidth) * 100 + '%'
+      gridRow: `${rowName} / span 1`
     };
     return (
       <div
-        className={cx(CSS.cell, {
-          [CSS.isDragOver]: this.isDragOver && isCellHighlight,
-          [CSS.isGuidesFront]: isGuidesFront
-        })}
+        className={
+          isExport
+            ? undefined
+            : cx(CSS.cell, {
+                [CSS.isDragOver]: this.isDragOver && isCellHighlight,
+                [CSS.isGuidesFront]: isGuidesFront
+              })
+        }
         style={style}
         data-css-grid-drag-cell
         onDragOver={e => e.preventDefault()}

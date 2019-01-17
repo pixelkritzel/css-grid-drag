@@ -13,12 +13,16 @@ function generateGridDefintionFromNames(names: string[]) {
 }
 
 function createGridCss({
+  cellHeight,
+  cellWidth,
   columns,
   gridGap,
   id,
   rows,
   startWidth
 }: {
+  cellHeight: IGridModel['cellHeight'];
+  cellWidth: IGridModel['cellWidth'];
   columns: IGridModel['columns'];
   gridGap: IGridModel['gridGap'];
   id: IGridModel['id'];
@@ -26,30 +30,25 @@ function createGridCss({
   startWidth: IGridModel['startWidth'];
 }) {
   return `
-  @media (min-width: ${startWidth}px) {
-    #grid-${id} {
-      display: grid;
-      grid-template-rows: ${generateGridDefintionFromNames(rows)};
-      grid-template-columns: ${generateGridDefintionFromNames(columns)};
-      grid-gap: ${gridGap};
-    }
+  #grid-${id} [data-css-grid-drag-cell]{
+    display: none;
   }
 
-  @media (min-width: ${startWidth}px) {
-    #grid-${id} {
-      display: grid;
-      grid-template-rows: ${generateGridDefintionFromNames(rows)};
-      grid-template-columns: ${generateGridDefintionFromNames(columns)};
-      grid-gap: ${gridGap};
+  @supports (display: grid) {
+    @media (min-width: ${startWidth}px) {
+      #grid-${id} [data-css-grid-drag-cell] {
+        display: block;
+        padding-bottom: ${(cellHeight / cellWidth) * 100}%;
+      }
+
+      #grid-${id} {
+        display: grid;
+        grid-template-rows: ${generateGridDefintionFromNames(rows)};
+        grid-template-columns: ${generateGridDefintionFromNames(columns)};
+        grid-gap: ${gridGap};
+      }
     }
   }
-
-  @media (max-width: ${startWidth - 1}px) {
-    #grid-${id} [data-css-grid-drag-cell]{
-      display: none;
-    }
-  }
-
 `;
 }
 
@@ -58,20 +57,23 @@ function createElementCss(prev: string, { id, start, width, height, resource, gr
   return (
     prev +
     `
-  #${htmlId} {
-  grid-column-start: ${start.columnName};
-  grid-column-end: span ${width};
-  grid-row-start: ${start.rowName};
-  grid-row-end: span ${height};
+#${htmlId} {
+  padding-bottom: ${ratio * 100}%;
+  margin-bottom: ${grid.gridGap};
   background-image: url(${resource.url});
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-@media (min-width: 320px) and (max-width: ${grid.startWidth - 1}px) {
-  #${htmlId} {
-    padding-bottom: ${ratio * 100}%;
-    margin-bottom: ${grid.gridGap};
+
+@supports (display: grid) {
+  @media (min-width: ${grid.startWidth}px) {
+    #${htmlId} {
+      grid-column-start: ${start.columnName};
+      grid-column-end: span ${width};
+      grid-row-start: ${start.rowName};
+      grid-row-end: span ${height};
+    }
   }
 }
 `
@@ -83,8 +85,8 @@ function createElementCss(prev: string, { id, start, width, height, resource, gr
 export class Grid extends React.Component<{ store?: IStore }, {}> {
   render() {
     const { store } = this.props;
-    const { columns, elements, gridGap, id, rows, startWidth } = store!.shownGrid;
-    const gridStyles = createGridCss({ rows, columns, id, startWidth, gridGap });
+    const { elements, id } = store!.shownGrid;
+    const gridStyles = createGridCss(store!.shownGrid);
     const elementCss = elements.reduce(createElementCss, '');
 
     return (

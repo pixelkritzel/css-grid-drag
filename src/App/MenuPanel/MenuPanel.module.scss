@@ -1,7 +1,13 @@
+@import '~src/scss/variables';
+
 .menuPanel {
   display: flex;
   align-items: center;
   height: 100%;
   list-style: none;
   padding: 0 28px;
+
+  li {
+    margin-right: $spacer;
+  }
 }

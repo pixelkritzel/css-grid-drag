@@ -10,6 +10,10 @@ type IMenuItemProps = {
 export class MenuItem extends React.Component<IMenuItemProps> {
   render() {
     const { action, label } = this.props;
-    return <Button onClick={action}>{label}</Button>;
+    return (
+      <Button variant="text" onClick={action}>
+        {label}
+      </Button>
+    );
   }
 }

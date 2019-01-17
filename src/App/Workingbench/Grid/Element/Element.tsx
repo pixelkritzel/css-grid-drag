@@ -55,15 +55,16 @@ export class Element extends React.Component<{ element: IElement; store?: IStore
   render() {
     const { element, store } = this.props;
     const { id } = element;
-    const isSelected = store!.selectedElement === element;
+    const { isExport, selectedElement } = store!;
+    const isSelected = selectedElement === element;
     return (
       <>
         <div
-          className={cx('element', CSS.element, { [CSS.selected]: isSelected })}
+          className={isExport ? undefined : cx(CSS.element, { [CSS.selected]: isSelected })}
           id={`element-${id}`}
           onClick={() => store!.setSelectedElement(element)}
           onKeyDown={this.bindKeyDown()}
-          tabIndex={0}
+          tabIndex={isExport ? undefined : 0}
           data-css-grid-drag-element
         >
           {isSelected && (

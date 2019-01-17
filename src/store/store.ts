@@ -16,6 +16,7 @@ export const storeModel = types
     draggedOverCell: types.maybe(types.reference(cellModel)),
     draggedResource: types.maybe(types.reference(resourceModel)),
     droppedOverCell: types.maybe(types.reference(cellModel)),
+    isExport: false,
     placement: types.maybe(placementModel),
     selectedElement: types.maybe(types.reference(elementModel)),
     shownGrid: types.reference(gridModel)
@@ -91,6 +92,9 @@ export const storeModel = types
         self.draggedResource = undefined;
         self.currentAction = 'MOVE_PLACEMENT';
       }
+    },
+    toggleIsExport() {
+      self.isExport = !self.isExport;
     },
     unsetSelectedElement() {
       self.selectedElement = undefined;
