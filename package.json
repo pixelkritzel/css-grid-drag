@@ -8,9 +8,9 @@
     "classnames": "^2.2.6",
     "global": "^4.3.2",
     "lodash": "^4.17.11",
-    "mobx": "^5.0.0",
-    "mobx-react": "^5.2.8",
-    "mobx-state-tree": "^3.5.0",
+    "mobx": "^5.8.0",
+    "mobx-react": "^5.4.3",
+    "mobx-state-tree": "^3.10.0",
     "now": "^11.4.6",
     "react": "^16.7.0",
     "react-animate-height": "^2.0.7",
@@ -44,6 +44,6 @@
     "@types/webpack": "^4.4.14",
     "js-file-download": "^0.4.4",
     "node-sass": "^4.9.3",
-    "typescript": "^3.1.1"
+    "typescript": "3.1"
   }
 }

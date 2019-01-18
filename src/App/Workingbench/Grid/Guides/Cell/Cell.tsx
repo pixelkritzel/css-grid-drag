@@ -3,13 +3,13 @@ import { inject, observer } from 'mobx-react';
 import { observable } from 'mobx';
 import * as cx from 'classnames';
 
-import { ICellModel } from 'src/store/cellModel';
+import { ICell } from 'src/store/gridModel';
 import { IStore } from 'src/store/store';
 
 import CSS from './Cell.module.scss';
 
 type ICellProps = {
-  cellInstance: ICellModel;
+  cell: ICell;
   store?: IStore;
 };
 
@@ -21,9 +21,9 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   onDragEnter = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
-    const { cellInstance, store } = this.props;
+    const { cell, store } = this.props;
     this.isDragOver = true;
-    setTimeout(() => store!.dragOverCell(cellInstance));
+    setTimeout(() => store!.dragOverCell(cell.id));
   };
 
   onDragLeave = () => {
@@ -34,25 +34,25 @@ export class Cell extends React.Component<ICellProps, {}> {
 
   onDrop = (event: React.DragEvent) => {
     event.preventDefault();
-    const { cellInstance, store } = this.props;
-    store!.dropOverCell(cellInstance);
+    const { cell, store } = this.props;
+    store!.dropOverCell(cell.id);
     this.isDragOver = false;
   };
 
   onMouseEnter = () => {
-    const { cellInstance, store } = this.props;
-    store!.mouseOverCell(cellInstance);
+    const { cell, store } = this.props;
+    store!.mouseOverCell(cell.id);
   };
 
   onMouseUp = () => {
-    const { cellInstance, store } = this.props;
-    store!.mouseUpCell(cellInstance);
+    const { cell, store } = this.props;
+    store!.mouseUpCell(cell.id);
   };
 
   render() {
-    const { cellInstance, store } = this.props;
+    const { cell, store } = this.props;
     const { isCellHighlight, isExport, isGuidesFront } = store!;
-    const { columnName, rowName } = cellInstance;
+    const { columnName, rowName } = cell;
     const style = {
       gridColumn: `${columnName} / span 1`,
       gridRow: `${rowName} / span 1`

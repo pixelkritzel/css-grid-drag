@@ -1,9 +1,9 @@
-import { getParent, types } from 'mobx-state-tree';
+import { getParent, types, getRoot } from 'mobx-state-tree';
 import * as uuid from 'uuid/v4';
 
-import { ICellModel } from './cellModel';
-import { IGridModel } from './gridModel';
+import { ICellId, IGridModel } from './gridModel';
 import { resourceModel } from './resourceModel';
+import { IStore } from './store';
 
 export const elementModel = types
   .model('element', {
@@ -20,25 +20,31 @@ export const elementModel = types
     get grid() {
       const grid = getParent(self, 2) as IGridModel;
       return grid;
-    },
+    }
+  }))
+  .views(self => ({
     get ratio() {
-      return (self.height * this.grid.cellHeight) / (self.width * this.grid.cellWidth);
+      return (self.height * self.grid.cellHeight) / (self.width * self.grid.cellWidth);
     },
     get startCell() {
-      const startCell = this.grid.cells.find(
+      const startCell = self.grid.cells.find(
         cell => cell.columnName === self.start.columnName && cell.rowName === self.start.rowName
       );
       return startCell!;
     }
   }))
   .actions(self => ({
-    changeHeight(cell: ICellModel) {
+    changeHeight(cellId: ICellId) {
+      const store = getRoot(self) as IStore;
+      const cell = store.shownGrid.getCellInstance(cellId)!;
       const height = cell.rowIndex - self.startCell.rowIndex + 1;
       if (height > 0) {
         self.height = height;
       }
     },
-    moveLeft(cell: ICellModel) {
+    moveLeft(cellId: ICellId) {
+      const store = getRoot(self) as IStore;
+      const cell = store.shownGrid.getCellInstance(cellId)!;
       const { columnName, columnIndex } = cell;
       const newWidth = self.width + self.startCell.columnIndex - columnIndex;
       if (newWidth > 0) {
@@ -46,13 +52,17 @@ export const elementModel = types
         self.start.columnName = columnName;
       }
     },
-    changeWidth(cell: ICellModel) {
+    changeWidth(cellId: ICellId) {
+      const store = getRoot(self) as IStore;
+      const cell = store.shownGrid.getCellInstance(cellId)!;
       const width = cell.columnIndex - self.startCell.columnIndex + 1;
       if (width > 0) {
         self.width = width;
       }
     },
-    moveTop(cell: ICellModel) {
+    moveTop(cellId: ICellId) {
+      const store = getRoot(self) as IStore;
+      const cell = store.shownGrid.getCellInstance(cellId)!;
       const { rowName, rowIndex } = cell;
       const newHeight = self.height + self.startCell.rowIndex - rowIndex;
       if (newHeight > 0) {

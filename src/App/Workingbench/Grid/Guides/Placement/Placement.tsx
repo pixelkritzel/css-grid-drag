@@ -10,7 +10,8 @@ export class Placement extends React.Component<{ store?: IStore }, {}> {
   render() {
     const { store } = this.props;
     if (store!.placement) {
-      const { start, width, height, resource } = store!.placement!;
+      const { width, height, resource } = store!.placement!;
+      const start = store!.placement!.start();
       const style = {
         // CSS grids numbering is based on one and this are array indexes based on zero, hence the +1
         gridColumnStart: start.columnIndex + 1,

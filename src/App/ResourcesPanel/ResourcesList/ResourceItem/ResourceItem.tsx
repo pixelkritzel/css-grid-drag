@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -11,6 +11,7 @@ import { IResource } from 'src/store/resourceModel';
 import css from './ResourceItem.module.scss';
 
 @inject('store')
+@observer
 export class ResourceItem extends React.Component<{ resource: IResource; store?: IStore }> {
   deleteResource = () => {
     const { resource, store } = this.props;
@@ -21,9 +22,9 @@ export class ResourceItem extends React.Component<{ resource: IResource; store?:
   };
 
   onDragStart = () => {
-    const { resource, store } = this.props;
-    store!.setCurrentAction('RESOURCE_DRAG');
-    store!.setDraggedResource(resource);
+    const store = this.props.store!;
+    store.setCurrentAction('RESOURCE_DRAG');
+    store.setDraggedResource(this.props.resource);
   };
 
   render() {
@@ -31,8 +32,8 @@ export class ResourceItem extends React.Component<{ resource: IResource; store?:
     return (
       <div className={css.resourceItem}>
         <img className={css.resourceImage} draggable onDragStart={this.onDragStart} alt="" src={resource.url} />
-        <div className={css.resourceItemTools} onClick={this.deleteResource}>
-          <Button icon>
+        <div className={css.resourceItemTools}>
+          <Button icon onClick={this.deleteResource} disabled={resource.isUsed}>
             <DeleteIcon />
           </Button>
         </div>

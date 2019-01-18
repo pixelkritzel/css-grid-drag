@@ -1,23 +1,14 @@
-import { destroy, Instance, onSnapshot, types } from 'mobx-state-tree';
+import { destroy, Instance, types } from 'mobx-state-tree';
 
 import { defaultGrid, gridModel } from './gridModel';
 import { createGridModelInitialData } from './gridModel';
 import { resourceModel, IResource } from './resourceModel';
 
-const defaultInitialData = {
-  grids: [createGridModelInitialData(defaultGrid)],
-  resources: [{ url: 'https://placekitten.com/300/400' }, { url: 'https://placekitten.com/400/300' }]
-};
-
-let initialData: typeof dataStoreModel.CreationType;
-
-const localStorageKey = 'css-grid-drag-store';
-
-const localData = localStorage.getItem(localStorageKey);
-if (localData) {
-  initialData = JSON.parse(localData);
-} else {
-  initialData = defaultInitialData;
+export function getDefaultData() {
+  return {
+    grids: [createGridModelInitialData(defaultGrid)],
+    resources: [{ url: 'https://placekitten.com/300/400' }, { url: 'https://placekitten.com/400/300' }]
+  };
 }
 
 export const dataStoreModel = types
@@ -35,7 +26,3 @@ export const dataStoreModel = types
   }));
 
 export type IDataStore = Instance<typeof dataStoreModel>;
-
-export const dataStore = dataStoreModel.create(initialData);
-
-onSnapshot(dataStore, snapShot => localStorage.setItem(localStorageKey, JSON.stringify(snapShot, undefined, 2)));

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 
-import jsDownloadFile from 'js-file-download';
 import { inject, Provider } from 'mobx-react';
 import { clone } from 'mobx-state-tree';
 
@@ -10,6 +9,9 @@ import { Grid } from 'src/App/Workingbench/Grid';
 
 import CSS from './MenuPanel.module.scss';
 import { IStore } from 'src/store';
+
+// tslint:disable-next-line no-var-requires
+const fileDownload = require('js-file-download');
 
 @inject('store')
 export class MenuPanel extends React.Component<{ store?: IStore }> {
@@ -24,18 +26,14 @@ export class MenuPanel extends React.Component<{ store?: IStore }> {
       exportGridNode
     );
     const html = exportGridNode.outerHTML;
-    jsDownloadFile(html, 'grid.html');
-  };
-
-  new = () => {
-    console.log('new');
+    fileDownload(html, 'grid.html');
   };
 
   render() {
     return (
       <ul className={CSS.menuPanel}>
         <li>
-          <MenuItem label="New" action={this.new} />
+          <MenuItem label="New" action={this.props.store!.resetStore} />
         </li>
         <li>
           <MenuItem label="Export" action={this.export} />

@@ -10,12 +10,11 @@ import { IStore } from 'src/store/store';
 @observer
 export class Guides extends React.Component<{ store?: IStore }> {
   render() {
-    const { shownGrid } = this.props.store!;
     return (
       <>
         <Placement />
-        {shownGrid.cells.map(cellInstance => (
-          <Cell key={cellInstance.id} cellInstance={cellInstance} />
+        {this.props.store!.shownGrid.cells.map(cell => (
+          <Cell key={cell.id} cell={cell} />
         ))}
       </>
     );

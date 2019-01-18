@@ -73,6 +73,7 @@ function createElementCss(prev: string, { id, start, width, height, resource, gr
       grid-column-end: span ${width};
       grid-row-start: ${start.rowName};
       grid-row-end: span ${height};
+      margin-bottom: 0;
     }
   }
 }

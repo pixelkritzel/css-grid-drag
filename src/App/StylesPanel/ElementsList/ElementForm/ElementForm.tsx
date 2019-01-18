@@ -23,9 +23,13 @@ type IElementFormProps = {
 @inject('store')
 @observer
 export class ElementForm extends React.Component<IElementFormProps> {
+  removeElement = () => {
+    const { element, store } = this.props;
+    store!.shownGrid.removeElement(element);
+  };
+
   render() {
     const { element, index, open, store } = this.props;
-    const { shownGrid } = store!;
     return (
       <div className={CSS.elementForm}>
         <Button variant="text" onClick={() => store!.setSelectedElement(element)}>
@@ -36,7 +40,7 @@ export class ElementForm extends React.Component<IElementFormProps> {
         </Button>
         <div className={cx(CSS.elementFormBody, { [CSS.closed]: !open })}>
           <img className={CSS.img} src={element.resource.url} />
-          <Button fullWidth variant="danger" onClick={() => shownGrid.removeElement(element)}>
+          <Button fullWidth variant="danger" onClick={this.removeElement}>
             <CancelIcon fontSize="inherit" /> Remove
           </Button>
         </div>
