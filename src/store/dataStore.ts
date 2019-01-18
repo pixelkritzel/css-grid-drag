@@ -1,4 +1,4 @@
-import { destroy, Instance, types } from 'mobx-state-tree';
+import { destroy, Instance, types, SnapshotIn } from 'mobx-state-tree';
 
 import { defaultGrid, gridModel } from './gridModel';
 import { createGridModelInitialData } from './gridModel';
@@ -26,3 +26,4 @@ export const dataStoreModel = types
   }));
 
 export type IDataStore = Instance<typeof dataStoreModel>;
+export type IDataSnaphotIn = SnapshotIn<typeof dataStoreModel>;

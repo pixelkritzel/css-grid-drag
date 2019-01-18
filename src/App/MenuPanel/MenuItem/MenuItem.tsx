@@ -1,18 +1,21 @@
 import * as React from 'react';
 
-import { Button } from 'src/App/Components/Button';
+import { Button, IButtonProps } from 'src/App/Components/Button';
 
-type IMenuItemProps = {
-  action: () => any;
-  label: string;
-};
+interface IMenuItemProps extends IButtonProps {
+  action?: () => any;
+}
 
 export class MenuItem extends React.Component<IMenuItemProps> {
+  static defaultProps = {
+    action: () => undefined
+  };
+
   render() {
-    const { action, label } = this.props;
+    const { action, children, ...otherProps } = this.props;
     return (
-      <Button variant="text" onClick={action}>
-        {label}
+      <Button variant="text" onClick={action} {...otherProps}>
+        {children}
       </Button>
     );
   }

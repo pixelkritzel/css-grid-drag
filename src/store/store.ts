@@ -1,6 +1,6 @@
-import { applySnapshot, Instance, onSnapshot, setLivelynessChecking, SnapshotIn, types } from 'mobx-state-tree';
+import { applySnapshot, Instance, onSnapshot, setLivelynessChecking, types } from 'mobx-state-tree';
 
-import { getDefaultData, dataStoreModel } from './dataStore';
+import { getDefaultData, dataStoreModel, IDataSnaphotIn } from './dataStore';
 import { elementModel, IElement } from './elementModel';
 import { gridModel, cellType, ICellId } from './gridModel';
 import { placementModel } from './placementModel';
@@ -10,13 +10,15 @@ const localStorageKey = 'css-grid-drag-store';
 
 setLivelynessChecking('error');
 
-function createStoreSnapShot(isUseLocalData = false) {
-  let initialData: SnapshotIn<typeof dataStoreModel>;
+function createStoreSnapShot(isUseLocalData = false, dataSnapshot?: IDataSnaphotIn) {
+  let initialData: IDataSnaphotIn;
 
   const localData = localStorage.getItem(localStorageKey);
 
   if (localData && !isUseLocalData) {
     initialData = JSON.parse(localData);
+  } else if (dataSnapshot) {
+    initialData = dataSnapshot;
   } else {
     initialData = getDefaultData();
   }
@@ -57,24 +59,16 @@ export const storeModel = types
     }
   }))
   .actions(self => {
-    let disposers: Array<() => void> = [];
-
-    function bindOnSnapShot() {
-      if (process.env.NODE_ENV === 'development') {
-        // tslint:disable-next-line no-console
-        const loggingDisposer = onSnapshot(self.data, console.log);
-        disposers.push(loggingDisposer);
-      }
-
-      const autosaveDisposer = onSnapshot(self.data, snapShot =>
-        localStorage.setItem(localStorageKey, JSON.stringify(snapShot, undefined, 2))
-      );
-      disposers.push(autosaveDisposer);
-    }
-
     return {
       afterCreate() {
-        bindOnSnapShot();
+        if (process.env.NODE_ENV === 'development') {
+          // tslint:disable-next-line no-console
+          onSnapshot(self.data, console.log);
+        }
+
+        onSnapshot(self.data, snapShot =>
+          localStorage.setItem(localStorageKey, JSON.stringify(snapShot, undefined, 2))
+        );
       },
       addElementToGrid() {
         const { placement, shownGrid } = self;
@@ -107,6 +101,9 @@ export const storeModel = types
           this.startElementPlacement();
         }
       },
+      load(dataSnapshot: IDataSnaphotIn) {
+        applySnapshot(self, createStoreSnapShot(true, dataSnapshot));
+      },
       mouseOverCell(cellId: ICellId) {
         if (self.currentAction === 'MOVE_PLACEMENT' && self.placement) {
           self.placement.movePlacementEnd(cellId);
@@ -120,10 +117,7 @@ export const storeModel = types
         }
       },
       resetStore() {
-        disposers.forEach(d => d());
-        disposers = [];
         applySnapshot(self, createStoreSnapShot(true));
-        bindOnSnapShot();
       },
       setCurrentAction(actionName: typeof self.currentAction) {
         self.currentAction = actionName;
